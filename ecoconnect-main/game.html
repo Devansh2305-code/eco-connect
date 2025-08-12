@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Eco Town Builder — Prototype</title>
+  
+  <style>
+    :root{--bg:#0f172a;--panel:#0b1220;--accent:#10b981;--muted:#94a3b8;--card:#071028}
+    html,body{height:100%;margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial}
+    body{background:linear-gradient(180deg,#071128 0%, #00121a 100%);color:#e6eef6;display:flex;gap:18px;padding:18px}
+    .sidebar{width:320px;background:linear-gradient(180deg,var(--panel),#031025);border-radius:12px;padding:16px;box-shadow:0 6px 24px rgba(2,6,23,.6)}
+    h1{font-size:18px;margin:0 0 12px}
+    .login-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .toolbar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .tool{background:rgba(255,255,255,0.03);padding:10px;border-radius:8px;cursor:pointer;text-align:center;border:1px solid rgba(255,255,255,0.03)}
+    .tool.active{outline:2px solid rgba(16,185,129,0.18);box-shadow:0 4px 10px rgba(16,185,129,0.06)}
+    .tool .icon{font-size:22px}
+    .metrics{margin-top:14px;background:linear-gradient(180deg,#061323,#071827);padding:12px;border-radius:10px}
+    .metrics .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.03)}
+    .metrics .row:last-child{border-bottom:0}
+    .play-area{flex:1;display:flex;flex-direction:column;gap:12px}
+    .topbar{display:flex;align-items:center;justify-content:space-between}
+    .grid-wrap{background:linear-gradient(180deg,#021022,#00161f);padding:12px;border-radius:12px;box-shadow:inset 0 2px 0 rgba(255,255,255,0.02)}
+    canvas{background:linear-gradient(180deg,#08202a,#04151a);border-radius:8px;display:block}
+    .controls{display:flex;gap:8px}
+    button{background:var(--accent);color:#042018;border:0;padding:8px 10px;border-radius:8px;cursor:pointer;font-weight:600}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    footer{font-size:12px;color:var(--muted)}
+    .legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .legend .item{display:flex;gap:6px;align-items:center;padding:6px 8px;background:rgba(255,255,255,0.02);border-radius:8px}
+    .money{font-weight:700;color:#ffd966}
+  </style>
+</head>
+<body>
+    <!-- header navbar -->
+
+    <div class="login-form" id="loginForm" style="display:none">
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+      <button onclick="register()">Register</button>
+      <div id="loginMessage"></div>
+    </div>
+    
+     <!-- ends her -->
+  <aside class="sidebar">
+    <h1>Eco Town Builder — Prototype</h1>
+    <div class="toolbar" id="toolbar">
+      <!-- tools inserted by JS -->
+    </div>
+
+    <div class="metrics">
+      <div class="row"><div>Money</div><div class="money" id="money">$1000</div></div>
+      <div class="row"><div>Net CO₂ (tons)</div><div id="co2">0</div></div>
+      <div class="row"><div>Carbon Credits</div><div id="credits">0</div></div>
+      <div class="row"><div>Tiles placed</div><div id="placed">0</div></div>
+    </div>
+
+    <div class="legend" id="legend"></div>
+    <div style="margin-top:12px">
+      <button id="sellCredits">Sell 1 credit → $10</button>
+      <button class="ghost" id="clear">Clear Grid</button>
+    </div>
+
+    <footer style="margin-top:12px">
+      Prototype: click a tool, then click grid to place. Trees/solar give negative CO₂ (savings) → earn credits.
+    </footer>
+  </aside>
+
+  <main class="play-area">
+    <div class="topbar">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="font-weight:700">Grid: <span id="gridSize">12×8</span></div>
+        <div class="controls">
+          <button id="undo" class="ghost">Undo</button>
+          <button id="redo" class="ghost">Redo</button>
+          <button id="home" class="ghost">Home</button>
+
+        </div>
+      </div>
+      <div>
+        <button id="info" class="ghost">Export CSV</button>
+      </div>
+    </div>
+
+    <div class="grid-wrap">
+      <canvas id="game" width="960" height="640"></canvas>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div id="message" style="color:var(--muted)"></div>
+      <div style="font-size:12px;color:var(--muted)">Built with ❤️ to teach emissions</div>
+    </div>
+  </main>
+
+<script>
+// ---------- Data model ----------
+const TOOLS = [
+  {id:'tree', name:'Tree', icon:'🌳', cost:5, co2:-2.5, desc:'Absorbs CO₂ (negative impact) — low cost'},
+  {id:'house', name:'House', icon:'🏠', cost:100, co2:6, desc:'Normal house — moderate emissions'},
+  {id:'greenhouse', name:'Green House', icon:'🏡', cost:180, co2:2, desc:'Energy-efficient home'},
+  {id:'road', name:'Road', icon:'🛣️', cost:30, co2:1.2, desc:'Road increases emissions'},
+  {id:'industry', name:'Industry', icon:'🏭', cost:300, co2:25, desc:'Polluting industry — high emissions'},
+  {id:'solar', name:'Solar', icon:'🔋', cost:200, co2:-4, desc:'Solar array reduces net emissions'}
+];
+
+const GRID_COLS = 12, GRID_ROWS = 8;
+const TILE_W = 80, TILE_H = 80;
+
+let money = 1000;
+let netCO2 = 0; // tons
+let credits = 0;
+let tilesPlaced = 0;
+
+let activeTool = null;
+let grid = Array.from({length:GRID_ROWS}, ()=>Array.from({length:GRID_COLS}, ()=>null));
+
+const history = {undo:[], redo:[]};
+
+// ---------- UI wiring ----------
+const toolbar = document.getElementById('toolbar');
+const legend = document.getElementById('legend');
+const moneyEl = document.getElementById('money');
+const co2El = document.getElementById('co2');
+const creditsEl = document.getElementById('credits');
+const placedEl = document.getElementById('placed');
+const gridSizeEl = document.getElementById('gridSize');
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+const message = document.getElementById('message');
+
+// create toolbar
+TOOLS.forEach(t=>{
+  const btn = document.createElement('div');
+  btn.className='tool';
+  btn.dataset.id=t.id;
+  btn.innerHTML = `<div class="icon">${t.icon}</div><div style="font-size:12px">${t.name}</div><div style="font-size:11px;color:var(--muted)">$${t.cost} · ${t.co2}t</div>`;
+  btn.onclick = ()=>{ selectTool(t.id); };
+  toolbar.appendChild(btn);
+});
+
+function renderLegend(){
+  legend.innerHTML = '';
+  TOOLS.forEach(t=>{
+    const d = document.createElement('div'); d.className='item';
+    d.innerHTML = `<div>${t.icon}</div><div style="font-size:13px"><strong>${t.name}</strong><div style="font-size:11px;color:var(--muted)">${t.desc}</div></div>`;
+    legend.appendChild(d);
+  });
+}
+renderLegend();
+
+function selectTool(id){
+  activeTool = TOOLS.find(x=>x.id===id) || null;
+  document.querySelectorAll('.tool').forEach(el=>el.classList.toggle('active', el.dataset.id===id));
+  message.textContent = activeTool ? `${activeTool.name} selected — click grid to place.` : '';
+}
+
+// ---------- Canvas drawing ----------
+function drawGrid(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let r=0;r<GRID_ROWS;r++){
+    for(let c=0;c<GRID_COLS;c++){
+      const x=c*TILE_W, y=r*TILE_H;
+      ctx.strokeStyle='rgba(255,255,255,0.03)';
+      ctx.strokeRect(x+1,y+1,TILE_W-2,TILE_H-2);
+      const cell = grid[r][c];
+      if(cell){
+        // background
+        ctx.fillStyle = 'rgba(0,0,0,0.15)';
+        ctx.fillRect(x+4,y+12,TILE_W-8,TILE_H-24);
+        // icon
+        ctx.font = '40px serif';
+        ctx.textAlign='center';
+        ctx.fillStyle = '#fff';
+        ctx.fillText(cell.icon, x+TILE_W/2, y+TILE_H/2+12);
+        // label
+        ctx.font='10px sans-serif';
+        ctx.fillStyle='rgba(255,255,255,0.75)';
+        ctx.fillText(cell.name, x+TILE_W/2, y+TILE_H-8);
+      }
+    }
+  }
+}
+
+canvas.addEventListener('click', (ev)=>{
+  const rect = canvas.getBoundingClientRect();
+  const x = ev.clientX - rect.left; const y = ev.clientY - rect.top;
+  const col = Math.floor(x / TILE_W); const row = Math.floor(y / TILE_H);
+  if(col<0||col>=GRID_COLS||row<0||row>=GRID_ROWS) return;
+  if(!activeTool){ message.textContent='Select a tool first.'; return; }
+  placeTile(row,col, activeTool);
+});
+
+function placeTile(row,col,tool){
+  if(grid[row][col]){ message.textContent='Tile already occupied. Clear or remove first.'; return; }
+  if(money < tool.cost){ message.textContent='Not enough money.'; return; }
+  // commit
+  const tile = {id:tool.id, name:tool.name, icon:tool.icon, cost:tool.cost, co2:tool.co2};
+  grid[row][col] = tile;
+  money -= tile.cost;
+  tilesPlaced += 1;
+  // update net CO2
+  netCO2 += tile.co2; // negative reduces net
+  // if this placement reduced net emissions (i.e., tile.co2 < 0) earn credits
+  if(tile.co2 < 0){
+    const earned = Math.abs(tile.co2); // 1 credit per ton saved
+    credits += earned;
+    message.textContent = `Placed ${tile.name}. Earned ${earned.toFixed(1)} carbon credits!`;
+  } else {
+    message.textContent = `Placed ${tile.name}.`;
+  }
+  updateUI();
+  history.undo.push({type:'place',row,col,tile}); history.redo = [];
+  drawGrid();
+}
+
+function updateUI(){
+  moneyEl.textContent = `$${money.toFixed(0)}`;
+  co2El.textContent = netCO2.toFixed(2);
+  creditsEl.textContent = credits.toFixed(2);
+  placedEl.textContent = tilesPlaced;
+}
+
+// ---------- buttons ----------
+document.getElementById('sellCredits').onclick = ()=>{
+  if(credits < 1){ message.textContent='Need at least 1 credit to sell.'; return; }
+  const sell = Math.floor(credits);
+  money += sell * 10; // $10 per credit
+  credits -= sell;
+  message.textContent = `Sold ${sell} credits for $${sell*10}.`;
+  updateUI();
+};
+
+document.getElementById('clear').onclick = ()=>{
+  if(!confirm('Clear all placements?')) return;
+  grid = Array.from({length:GRID_ROWS}, ()=>Array.from({length:GRID_COLS}, ()=>null));
+  money = 1000; netCO2 = 0; credits = 0; tilesPlaced = 0; history.undo=[]; history.redo=[]; updateUI(); drawGrid(); message.textContent='Cleared.';
+};
+
+// undo/redo
+document.getElementById('undo').onclick = ()=>{
+  const op = history.undo.pop(); if(!op){ message.textContent='Nothing to undo.'; return; }
+  if(op.type==='place'){
+    const {row,col,tile} = op; grid[row][col]=null; money += tile.cost; tilesPlaced -=1; netCO2 -= tile.co2; // reverse
+    if(tile.co2 < 0){ credits -= Math.abs(tile.co2); }
+    history.redo.push(op);
+    drawGrid(); updateUI(); message.textContent='Undid placement.';
+  }
+};
+
+document.getElementById('redo').onclick = ()=>{
+  const op = history.redo.pop(); if(!op){ message.textContent='Nothing to redo.'; return; }
+  if(op.type==='place'){
+    const {row,col,tile} = op; grid[row][col]=tile; money -= tile.cost; tilesPlaced+=1; netCO2 += tile.co2; if(tile.co2<0) credits += Math.abs(tile.co2);
+    history.undo.push(op);
+    drawGrid(); updateUI(); message.textContent='Redid placement.';
+  }
+};
+
+// export CSV (simple)
+document.getElementById('info').onclick = ()=>{
+  let rows = ['row,col,id,name,cost,co2'];
+  for(let r=0;r<GRID_ROWS;r++) for(let c=0;c<GRID_COLS;c++){
+    const t = grid[r][c]; if(!t) continue; rows.push([r,c,t.id,t.name,t.cost,t.co2].join(','));
+  }
+  const blob = new Blob([rows.join('\n')], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='town_export.csv'; a.click(); URL.revokeObjectURL(url);
+}
+
+// init
+selectTool('tree'); updateUI(); drawGrid();
+
+// scrpit for home button
+
+document.getElementById('home').addEventListener('click', function () {
+  window.location.href = 'index.html';
+});
+
+// Login Functionality
+async function login() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    const loginMessage = document.getElementById('loginMessage');
+
+    try {
+        const response = await fetch('http://localhost:5000/auth/login', { // Adjust the URL if your backend is different
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            localStorage.setItem('token', data.token);
+            loginMessage.textContent = 'Login successful!';
+            // Redirect or update UI as needed
+        } else {
+            loginMessage.textContent = `Login failed: ${data.message}`;
+        }
+    } catch (error) {
+        loginMessage.textContent = 'An error occurred during login.';
+    }
+}
+
+// Register Functionality
+async function register() {
+    // Implement your registration logic here, similar to the login function
+    // Make sure to call the correct registration endpoint on your backend
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    //const loginMessage = document.getElementById('loginMessage');
+
+    window.location.href = 'Profile.html';
+
+}
+
+// Add event listener to show login form
+
+
+</script>
+</body>
+</html>

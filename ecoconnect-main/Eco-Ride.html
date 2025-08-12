@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco-ride Page</title>
+    <!-- Font Awesome CDN for your header icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" xintegrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Tailwind CSS CDN for the planner content -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Your existing style.css content starts here */
+        * {
+            margin : 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 20px 20px;
+            background: #2A7B9B;
+            background: linear-gradient(90deg, rgba(42, 123, 155, 1) 0%, rgba(62, 157, 145, 1) 22%, rgba(72, 173, 140, 1) 33%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%); /* Green background */
+            color: white; /* White text */
+            height: 80px;
+            position: fixed;
+            width: 100%;
+            top: 0; /* Added: Ensures the navbar is always at the very top of the viewport */
+            z-index: 1000; /* Ensure navbar stays on top */
+        }
+
+
+        .first-box {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        /* Note: Your HTML uses .nav-links, but your CSS provided .links.
+           I'm assuming .nav-links is the correct class for these styles.
+           If .links was intended for something else, please clarify. */
+        .nav-links { /* Changed from .links to .nav-links to match HTML */
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            font-size: 1.2rem; /* Adjusted for better fit with text */
+            padding: 10px; /* Added padding to make links clickable */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth hover */
+        }
+
+        .border {
+            border: 1px solid transparent; /* Changed to transparent, as your hover adds background color */
+            /* Removed padding here as it's now in .nav-links */
+        }
+
+        .border:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Light hover effect */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 2.0rem; /* Adjusted for better fit */
+            font-weight: bold; /* Added bold for prominence */
+        }
+
+        .logo span {
+            margin-left: 10px; /* Space between icon and text */
+        }
+
+        .profile {
+            font-size : 1.2rem; /* Adjusted for consistency */
+        }
+
+        .nav-links a{
+            text-decoration: none; /* Remove underline from links */
+            color: white; /* White text for links */
+            display: flex; /* Allow icon and text to align */
+            align-items: center;
+        }
+
+        .nav-links a i {
+            margin-right: 8px; /* Space between icon and text */
+        }
+
+        /* Your hero-section styles are not directly used on this page,
+           but I'll keep them here in case they are used elsewhere or for reference. */
+        .hero-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 60vh; /* Full viewport height */
+            background:linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+            padding-top: 80px; /* To push content below fixed header */
+        }
+
+        .hero-content {
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            color: #333; /* Dark text for contrast */
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+
+        .hero-section p {
+            font-size: 1.5rem;
+            color: #666; /* Lighter text for contrast */
+            margin-bottom: 20px;
+        }
+
+        .hero-section a {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            color: white; /* White text */
+            background-color: #2A7B9B; /* Button background */
+            border: none;
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer;
+            text-decoration:none;
+            margin-top: 30px;
+        }
+
+        .hero-button {
+            margin-top: 30px;
+        }
+
+        .hero-button:hover {
+            background: #aecbee;
+            background: radial-gradient(circle, rgba(174, 203, 238, 1) 72%, rgba(148, 187, 233, 1) 100%);
+        }
+
+        /* Eco Commute Planner custom styles start here (merged) */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+            color: #334155; /* Darker text color */
+            padding-top: 80px; /* Crucial: Pushes content below the fixed navbar */
+        }
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 4.5rem;
+            background-color: #ffffff;
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            height: 100vh; /* Softer shadow */
+        }
+        .input-group label {
+            font-weight: 600;
+            color: #475569; /* Slightly lighter label color */
+        }
+        .input-group input[type="text"],
+        .input-group input[type="date"] {
+            border: 1px solid #cbd5e1; /* Light gray border */
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+        .input-group input[type="text"]:focus,
+        .input-group input[type="date"]:focus {
+            outline: none;
+            border-color: #60a5fa; /* Blue focus border */
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+        .btn-primary {
+            background-color: #22c55e; /* Green button */
+            color: white;
+            padding: 0.85rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 10px rgba(34, 197, 94, 0.3);
+        }
+        .btn-primary:hover {
+            background-color: #16a34a; /* Darker green on hover */
+            transform: translateY(-1px);
+        }
+        .card {
+            background-color: #f8fafc; /* Lighter card background */
+            border: 1px solid #e2e8f0; /* Light border */
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .carbon-footprint {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #059669; /* Darker green for footprint */
+        }
+        .suggestion-list li {
+            margin-bottom: 0.5rem;
+            color: #475569;
+        }
+        .suggestion-list li::before {
+            content: '•';
+            color: #22c55e; /* Green bullet point */
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        .footer {
+ background: #2C3E50;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #4CA1AF, #2C3E50);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #4CA1AF, #2C3E50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  color: white;
+  padding: 20px 20px 20px 20px;
+  
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* flex-wrap: wrap; */
+}
+
+.footer-section {
+  display : flex;
+  flex: 1;
+  margin: 10px;
+}
+
+.footer-section h3{
+    font-size: 1.7rem;
+    text-align: center;
+}
+
+.footer-section h4 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline;
+}
+
+.footer-section .social a {
+  margin-right: 10px;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  padding-top: 10px;
+  font-size: 0.9rem;
+}
+
+.follow {
+    padding : 20px;
+    font-size: 1.6rem;
+}
+    </style>
+</head>
+<body class="antialiased">
+    <header>
+        <div class="navbar border">
+            <div class="logo border">
+                <i class="fa-solid fa-leaf"></i>
+                <span>EcoConnect</span>
+            </div>
+
+            <div class="first-box">
+                <div class="nav-links border">
+                    <div class="link">
+                        <a href="index.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Home</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-links border">
+                    <div class="link">
+                        <a href="Community_Forum.html">
+                        <i class="fa-solid fa-people-group"></i>
+                        <span>Community Forum</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-links border">
+                    <div class="link">
+                        <a href="Eco-Ride.html">
+                        <i class="fa-solid fa-car-side"></i>
+                        <span>Eco-Ride</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-links border">
+                    <div class="link">
+                        <a href="Shopping_Assistant.html">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span>Shopping Assistant</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-links border">
+                    <div class="link">
+                        <a href="Education.html">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Education</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-links border">
+                <div class="profile">
+                    <a href="Profile.html">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profile</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- The Eco Commute Planner content starts here -->
+    <div class="container">
+        <h1 class="text-4xl font-extrabold text-center mb-6 text-gray-800">
+            Eco Commute Planner
+        </h1>
+        <p class="text-center text-lg mb-8 text-gray-600">
+            Plan your journey, minimize your carbon footprint.
+        </p>
+
+        <!-- Journey Input Form -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="input-group">
+                <label for="origin" class="block text-sm mb-2">Departure Location:</label>
+                <input type="text" id="origin" placeholder="e.g., New York City" class="focus:border-blue-500">
+            </div>
+            <div class="input-group">
+                <label for="destination" class="block text-sm mb-2">Arrival Location:</label>
+                <input type="text" id="destination" placeholder="e.g., Los Angeles" class="focus:border-blue-500">
+            </div>
+        </div>
+
+        <div class="text-center mb-10">
+            <button id="calculateBtn" class="btn-primary">
+                Calculate My Eco-Route
+            </button>
+        </div>
+
+        <!-- Results Section -->
+        <div id="results" class="hidden">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Your Eco-Friendly Options</h2>
+
+            <!-- Message Box for alerts -->
+            <div id="messageBox" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4" role="alert">
+                <strong class="font-bold">Error!</strong>
+                <span class="block sm:inline" id="messageText"></span>
+            </div>
+
+            <div id="optionsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Travel option cards will be inserted here by JavaScript -->
+            </div>
+
+            <!-- General Greener Travel Tips -->
+            <div class="bg-blue-50 p-6 rounded-xl shadow-md mb-10">
+                <h3 class="text-2xl font-bold text-blue-800 mb-4">Go Even Greener!</h3>
+                <p class="text-blue-700 mb-4">
+                    Every journey is an opportunity to reduce your environmental impact. Here are some general tips:
+                </p>
+                <ul class="list-disc pl-5 text-blue-700 space-y-2">
+                    <li>For short distances, consider walking or cycling. It's healthy, free, and produces zero emissions!</li>
+                    <li>If driving, carpool with others to share the carbon burden.</li>
+                    <li>Opt for public transport (buses, trains) whenever possible, especially for intercity travel.</li>
+                    <li>When flying, choose direct flights and fly economy class to reduce your footprint.</li>
+                    <li>Consider offsetting your unavoidable emissions through certified carbon offset programs.</li>
+                    <li>Travel light! Less luggage means less fuel consumed.</li>
+                </ul>
+            </div>
+
+            <!-- Low Carbon Stays & Living Section -->
+            <div class="bg-green-50 p-6 rounded-xl shadow-md">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Low Carbon Stays & Living</h2>
+                <p class="text-center text-lg mb-8 text-gray-600">
+                    Find eco-friendly accommodations and explore sustainable living options.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="input-group">
+                        <label for="stayLocation" class="block text-sm mb-2">Location:</label>
+                        <input type="text" id="stayLocation" placeholder="e.g., Paris, New York, Rural" class="focus:border-blue-500">
+                    </div>
+                    <div class="input-group">
+                        <label for="checkInDate" class="block text-sm mb-2">Check-in Date:</label>
+                        <input type="date" id="checkInDate" class="focus:border-blue-500">
+                    </div>
+                    <div class="input-group">
+                        <label for="checkOutDate" class="block text-sm mb-2">Check-out Date:</label>
+                        <input type="date" id="checkOutDate" class="focus:border-blue-500">
+                    </div>
+                </div>
+
+                <div class="text-center mb-10">
+                    <button id="searchStaysBtn" class="btn-primary">
+                        Search Eco Stays
+                    </button>
+                </div>
+
+                <div id="staysResults" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Low carbon stay cards will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get references to DOM elements for travel planning
+        const calculateBtn = document.getElementById('calculateBtn');
+        const originInput = document.getElementById('origin');
+        const destinationInput = document.getElementById('destination');
+        const resultsSection = document.getElementById('results');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+
+        // Get references to DOM elements for stays
+        const searchStaysBtn = document.getElementById('searchStaysBtn');
+        const stayLocationInput = document.getElementById('stayLocation');
+        const checkInDateInput = document.getElementById('checkInDate');
+        const checkOutDateInput = document.getElementById('checkOutDate');
+        const staysResultsContainer = document.getElementById('staysResults');
+
+        // Function to display a message in the message box
+        function showMessage(message, type = 'error') {
+            messageText.textContent = message;
+            messageBox.classList.remove('hidden');
+            if (type === 'error') {
+                messageBox.classList.remove('bg-green-100', 'border-green-400', 'text-green-700');
+                messageBox.classList.add('bg-red-100', 'border-red-400', 'text-red-700');
+            } else {
+                messageBox.classList.remove('bg-red-100', 'border-red-400', 'text-green-700');
+                messageBox.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
+            }
+        }
+
+        // Function to hide the message box
+        function hideMessageBox() {
+            messageBox.classList.add('hidden');
+        }
+
+        // Simulate carbon footprint calculation based on mode and distance
+        // In a real application, this would involve complex APIs and data.
+        function calculateCarbonFootprint(mode, distanceKm) {
+            let carbonPerKm; // kg CO2e per km per passenger
+            switch (mode) {
+                case 'airplane':
+                    carbonPerKm = 0.15; // High for air travel
+                    break;
+                case 'car':
+                    carbonPerKm = 0.08; // Assumes average car, 1 passenger
+                    break;
+                case 'train':
+                    carbonPerKm = 0.03; // Generally lower for trains
+                    break;
+                case 'bus':
+                    carbonPerKm = 0.05; // Lower than car, higher than train
+                    break;
+                case 'boat':
+                    carbonPerKm = 0.10; // Varies greatly, using a moderate value
+                    break;
+                case 'walk':
+                case 'bicycle':
+                    carbonPerKm = 0; // Zero direct emissions
+                    break;
+                default:
+                    carbonPerKm = 0.07; // Default average
+            }
+            // Add some randomness for more realistic feel
+            const variability = (Math.random() * 0.2 - 0.1); // +/- 10%
+            return (carbonPerKm * distanceKm * (1 + variability)).toFixed(2);
+        }
+
+        // Simulate distance calculation (very basic, just for demonstration)
+        // In a real application, this would be replaced by an API call.
+        function simulateDistance(origin, destination) {
+            // --- API INTEGRATION CONCEPT: START ---
+            /*
+            // This is how you would typically make an API call to get distance.
+            // You would replace 'YOUR_API_KEY' with your actual key from a service like Google Maps.
+            // The URL and parameters would vary based on the specific API.
+            const API_KEY = 'YOUR_API_KEY'; // Replace with your actual API key
+            const API_ENDPOINT = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(destination)}&key=${API_KEY}`;
+
+            return fetch(API_ENDPOINT)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Parse the response to get the distance.
+                    // The exact path to distance would depend on the API's JSON structure.
+                    // Example for Google Distance Matrix:
+                    if (data.rows && data.rows.length > 0 && data.rows[0].elements && data.rows[0].elements.length > 0) {
+                        const element = data.rows[0].elements[0];
+                        if (element.status === 'OK') {
+                            const distanceMeters = element.distance.value; // Distance in meters
+                            return distanceMeters / 1000; // Convert to kilometers
+                        } else {
+                            console.error('API Error:', element.status);
+                            showMessage(`Could not get distance from API: ${element.status}`, 'error');
+                            return Math.floor(Math.random() * 1900) + 100; // Fallback to simulated distance
+                        }
+                    } else {
+                        console.error('Unexpected API response structure:', data);
+                        showMessage('Unexpected response from distance API.', 'error');
+                        return Math.floor(Math.random() * 1900) + 100; // Fallback to simulated distance
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching distance:', error);
+                    showMessage('Failed to connect to distance API. Using simulated data.', 'error');
+                    return Math.floor(Math.random() * 1900) + 100; // Fallback to simulated distance
+                });
+            */
+            // --- API INTEGRATION CONCEPT: END ---
+
+
+            // --- SIMULATED DISTANCE (CURRENT IMPLEMENTATION) ---
+            const knownRoutes = {
+                'new york city to los angeles': 4500, // km
+                'london to paris': 450, // km
+                'mumbai to delhi': 1400, // km
+                'delhi to agra': 200, // km
+                'san francisco to seattle': 1300, // km
+                'sydney to melbourne': 900, // km
+                'tokyo to osaka': 500, // km
+                'berlin to munich': 580, // km
+                'chennai to bangalore': 350, // km
+                'hyderabad to bangalore': 570, // km
+                'kolkata to chennai': 1670, // km
+                'pune to mumbai': 150, // km
+                'goa to bangalore': 550, // km
+                'jaipur to delhi': 270, // km
+                'ahmedabad to mumbai': 530, // km
+                'lucknow to delhi': 500, // km
+                'patna to kolkata': 550, // km
+                'bhopal to indore': 200, // km
+                'kochi to bangalore': 550, // km
+                'thiruvananthapuram to kochi': 200, // km
+                'chandigarh to delhi': 250, // km
+                'amritsar to delhi': 450, // km
+                'dehradun to delhi': 250, // km
+                'shimla to delhi': 350, // km
+                'manali to delhi': 550, // km
+                'rishikesh to delhi': 250, // km
+                'haridwar to delhi': 200, // km
+                'varanasi to delhi': 800, // km
+                'agra to lucknow': 330, // km
+                'kanpur to lucknow': 80, // km
+                'allahabad to lucknow': 200, // km
+                'gwalior to bhopal': 420, // km
+                'udaipur to jaipur': 400, // km
+                'jodhpur to jaipur': 350, // km
+                'jaisalmer to jodhpur': 280, // km
+                'surat to ahmedabad': 260, // km
+                'vadodara to ahmedabad': 100, // km
+                'rajkot to ahmedabad': 220, // km
+                'nagpur to pune': 700, // km
+                'nashik to pune': 200, // km
+                'aurangabad to pune': 230, // km
+                'shirdi to pune': 180, // km
+                'vijayawada to hyderabad': 270, // km
+                'visakhapatnam to hyderabad': 600, // km
+                'tirupati to chennai': 150, // km
+                'madurai to chennai': 450, // km
+                'coimbatore to chennai': 500, // km
+                'puducherry to chennai': 150, // km
+                'mysore to bangalore': 150, // km
+                'mangalore to bangalore': 350, // km
+                'hubli to bangalore': 400, // km
+                'bhubaneswar to kolkata': 450, // km
+                'ranchi to kolkata': 400, // km
+                'guwahati to kolkata': 1000, // km
+                'shillong to guwahati': 100, // km
+                'gangtok to siliguri': 120, // km
+                'port blair to chennai': 1300, // km (boat/flight)
+                'leh to srinagar': 400, // km
+                'srinagar to jammu': 300, // km
+                'agra to delhi': 200, // km
+                'delhi to jaipur': 270, // km
+                'delhi to chandigarh': 250, // km
+                'delhi to dehradun': 250, // km
+                'delhi to lucknow': 500, // km
+                'delhi to amritsar': 450, // km
+                'delhi to shimla': 350, // km
+                'delhi to manali': 550, // km
+                'delhi to rishikesh': 250, // km
+                'haridwar to delhi': 200, // km
+                'delhi to varanasi': 800, // km
+                'delhi to mumbai': 1400, // km
+                'delhi to kolkata': 1500, // km
+                'delhi to bangalore': 2100, // km
+                'delhi to chennai': 2200, // km
+                'delhi to hyderabad': 1500, // km
+                'delhi to ahmedabad': 900, // km
+                'delhi to pune': 1400, // km
+                'delhi to goa': 1800, // km
+                'delhi to udaipur': 650, // km
+                'delhi to jodhpur': 600, // km
+                'delhi to jaisalmer': 800, // km
+                'delhi to surat': 1200, // km
+                'delhi to vadodara': 950, // km
+                'delhi to rajkot': 1100, // km
+                'delhi to nagpur': 1000, // km
+                'delhi to nashik': 1200, // km
+                'delhi to aurangabad': 1100, // km
+                'delhi to shirdi': 1100, // km
+                'delhi to vijayawada': 1600, // km
+                'delhi to visakhapatnam': 1700, // km
+                'delhi to tirupati': 2000, // km
+                'delhi to madurai': 2500, // km
+                'delhi to coimbatore': 2400, // km
+                'delhi to puducherry': 2300, // km
+                'delhi to mysore': 2200, // km
+                'delhi to mangalore': 2300, // km
+                'delhi to hubli': 1800, // km
+                'delhi to bhubaneswar': 1500, // km
+                'delhi to ranchi': 1200, // km
+                'delhi to guwahati': 1900, // km
+                'delhi to shillong': 2000, // km
+                'delhi to gangtok': 1600, // km
+                'delhi to port blair': 2500, // km
+                'delhi to leh': 1000, // km
+                'delhi to srinagar': 800, // km
+                'delhi to jammu': 600, // km
+                'bangalore to chennai': 350, // km
+                'bangalore to hyderabad': 570, // km
+                'bangalore to mumbai': 980, // km
+                'bangalore to pune': 850, // km
+                'bangalore to goa': 550, // km
+                'bangalore to kochi': 550, // km
+                'bangalore to thiruvananthapuram': 750, // km
+                'bangalore to mysore': 150, // km
+                'bangalore to mangalore': 350, // km
+                'bangalore to hubli': 400, // km
+                'mumbai to pune': 150, // km
+                'mumbai to ahmedabad': 530, // km
+                'mumbai to goa': 580, // km
+                'mumbai to hyderabad': 710, // km
+                'mumbai to nagpur': 700, // km
+                'mumbai to nashik': 200, // km
+                'mumbai to aurangabad': 230, // km
+                'mumbai to shirdi': 180, // km
+                'kolkata to chennai': 1670, // km
+                'kolkata to hyderabad': 1400, // km
+                'kolkata to mumbai': 1900, // km
+                'kolkata to bangalore': 1870, // km
+                'kolkata to bhubaneswar': 450, // km
+                'kolkata to ranchi': 400, // km
+                'kolkata to guwahati': 1000, // km
+                'kolkata to shillong': 1100, // km
+                'kolkata to gangtok': 700, // km
+            };
+
+            const key1 = `${origin.toLowerCase()} to ${destination.toLowerCase()}`;
+            const key2 = `${destination.toLowerCase()} to ${origin.toLowerCase()}`; // Check reverse too
+
+            if (knownRoutes[key1]) {
+                return knownRoutes[key1];
+            } else if (knownRoutes[key2]) {
+                return knownRoutes[key2];
+            }
+            // Fallback for unknown routes: a random distance between 100 and 2000 km
+            return Math.floor(Math.random() * 1900) + 100;
+        }
+
+        // Main function to handle travel calculation and display
+        calculateBtn.addEventListener('click', async () => { // Added 'async' here
+            hideMessageBox(); // Hide any previous messages
+
+            const origin = originInput.value.trim();
+            const destination = destinationInput.value.trim();
+
+            if (!origin || !destination) {
+                showMessage('Please enter both departure and arrival locations for your journey.');
+                return;
+            }
+
+            // In a real API scenario, you'd await the distance from the API
+            // const distanceKm = await simulateDistance(origin, destination);
+            const distanceKm = simulateDistance(origin, destination); // Using simulated for now
+
+            // Define travel options with their specific advice
+            const travelOptions = [
+                {
+                    mode: 'Bus',
+                    icon: '🚌',
+                    carbon: calculateCarbonFootprint('bus', distanceKm),
+                    reduceTips: [
+                        'Choose local public transport over private buses for shorter distances.',
+                        'Look for bus operators using newer, more fuel-efficient fleets.',
+                        'Consider overnight buses for longer journeys to save on accommodation and travel time.'
+                    ],
+                    ticketSuggestions: [
+                        'Check for multi-day or weekly passes if you plan multiple trips.',
+                        'Book in advance for potentially cheaper and greener options.',
+                        'Look for direct routes to avoid unnecessary transfers.'
+                    ]
+                },
+                {
+                    mode: 'Train',
+                    icon: '🚆',
+                    carbon: calculateCarbonFootprint('train', distanceKm),
+                    reduceTips: [
+                        'Trains are generally one of the greenest motorized options, especially electric trains.',
+                        'Opt for direct routes to minimize energy consumption from stops and starts.',
+                        'Choose standard class over first class if available, as it typically means more passengers per carriage.'
+                    ],
+                    ticketSuggestions: [
+                        'Explore rail passes for extensive travel within a region or country.',
+                        'Book off-peak tickets for better prices and potentially less crowded, more efficient journeys.',
+                        'Consider sleeper trains for long distances to combine travel and accommodation.'
+                    ]
+                },
+                {
+                    mode: 'Car',
+                    icon: '🚗',
+                    carbon: calculateCarbonFootprint('car', distanceKm),
+                    reduceTips: [
+                        'Carpooling is the single biggest way to reduce your car\'s per-person footprint.',
+                        'Consider renting an electric vehicle (EV) if available for your journey.',
+                        'Drive efficiently: avoid harsh acceleration/braking, maintain tire pressure, and reduce unnecessary weight.'
+                    ],
+                    ticketSuggestions: [
+                        'If renting, specifically ask for hybrid or electric car options.',
+                        'Use ride-sharing apps that offer carpooling options.',
+                        'Look for car rental companies with sustainability initiatives.'
+                    ]
+                },
+                {
+                    mode: 'Airplane',
+                    icon: '✈️',
+                    carbon: calculateCarbonFootprint('airplane', distanceKm),
+                    reduceTips: [
+                        'Fly direct whenever possible; take-offs and landings consume the most fuel.',
+                        'Choose economy class; more passengers per plane means lower per-person emissions.',
+                        'Consider offsetting your flight\'s emissions through reputable programs (e.g., Gold Standard, Verified Carbon Standard).',
+                        'Pack light to reduce the aircraft\'s weight and fuel consumption.'
+                    ],
+                    ticketSuggestions: [
+                        'Prioritize direct flights.',
+                        'Look for airlines that invest in sustainable aviation fuels (SAF) or have modern, fuel-efficient fleets.',
+                        'Book well in advance for potentially better deals and more options.'
+                    ]
+                },
+                {
+                    mode: 'Boat',
+                    icon: '🚢',
+                    carbon: calculateCarbonFootprint('boat', distanceKm),
+                    reduceTips: [
+                        'Emissions vary greatly by boat type (ferry, cruise, cargo). Ferries are generally more efficient for short distances.',
+                        'For cruises, choose operators with strong environmental policies and newer, more efficient vessels.',
+                        'Avoid unnecessary short boat trips if alternative land transport is available.'
+                    ],
+                    ticketSuggestions: [
+                        'Check ferry schedules for coastal or island travel.',
+                        'Research cruise lines for their environmental ratings and sustainable practices.',
+                        'Look for local boat tours that emphasize eco-tourism.'
+                    ]
+                },
+                {
+                    mode: 'Walk',
+                    icon: '🚶',
+                    carbon: '0.00',
+                    reduceTips: [
+                        'The ultimate zero-carbon option! Great for your health and the environment.',
+                        'Explore local areas on foot to discover hidden gems.',
+                        'Combine walking with public transport for a truly green commute.'
+                    ],
+                    ticketSuggestions: [
+                        'No tickets needed! Just comfortable shoes.'
+                    ]
+                },
+                {
+                    mode: 'Bicycle',
+                    icon: '🚲',
+                    carbon: '0.00',
+                    reduceTips: [
+                        'Another fantastic zero-carbon option, perfect for medium distances.',
+                        'Consider electric bikes for longer or hillier routes.',
+                        'Many cities offer bike-sharing programs for convenience.'
+                    ],
+                    ticketSuggestions: [
+                        'No tickets needed! Look for bike rental services in your destination city.'
+                    ]
+                }
+            ];
+
+            // Clear previous results
+            optionsContainer.innerHTML = '';
+
+            // Populate results
+            travelOptions.forEach(option => {
+                const card = document.createElement('div');
+                card.className = 'card flex flex-col space-y-3';
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3 mb-2">
+                        <span class="text-3xl">${option.icon}</span>
+                        <h3 class="text-xl font-semibold text-gray-700">${option.mode}</h3>
+                    </div>
+                    <p class="text-gray-600">
+                        Estimated Distance: <span class="font-medium">${distanceKm} km</span>
+                    </p>
+                    <p class="text-gray-600">
+                        Estimated Carbon Footprint: <span class="carbon-footprint">${option.carbon} kg CO2e</span>
+                    </p>
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-2">How to reduce carbon:</h4>
+                        <ul class="suggestion-list text-sm">
+                            ${option.reduceTips.map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-2">Low carbon ticket suggestions:</h4>
+                        <ul class="suggestion-list text-sm">
+                            ${option.ticketSuggestions.map(suggestion => `<li>${suggestion}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <!-- Placeholder for a "Book Now" button -->
+                    <button class="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105" onclick="alert('This button would link to a real booking site for ${option.mode}!')">
+                        Explore Tickets
+                    </button>
+                `;
+                optionsContainer.appendChild(card);
+            });
+
+            resultsSection.classList.remove('hidden');
+        });
+
+        // Function to handle low carbon stays search and display
+        searchStaysBtn.addEventListener('click', async () => { // Added 'async' here
+            hideMessageBox(); // Hide any previous messages
+
+            const stayLocation = stayLocationInput.value.trim();
+            const checkInDate = checkInDateInput.value;
+            const checkOutDate = checkOutDateInput.value;
+
+            if (!stayLocation) {
+                showMessage('Please enter a location for your stay.', 'error');
+                return;
+            }
+            if (!checkInDate || !checkOutDate) {
+                showMessage('Please enter both check-in and check-out dates.', 'error');
+                return;
+            }
+            if (new Date(checkInDate) >= new Date(checkOutDate)) {
+                showMessage('Check-out date must be after check-in date.', 'error');
+                return;
+            }
+
+            // --- API INTEGRATION CONCEPT FOR STAYS: START ---
+            /*
+            // This is how you would typically make an API call to get eco-friendly stays.
+            // You would replace 'YOUR_STAYS_API_KEY' and 'YOUR_STAYS_API_ENDPOINT'
+            // with actual values from a booking or eco-tourism API.
+            const STAYS_API_KEY = 'YOUR_STAYS_API_KEY';
+            const STAYS_API_ENDPOINT = `https://api.example.com/eco-stays?location=${encodeURIComponent(stayLocation)}&checkin=${checkInDate}&checkout=${checkOutDate}&key=${STAYS_API_KEY}`;
+
+            try {
+                const response = await fetch(STAYS_API_ENDPOINT);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // Process the API data and format it into cards
+                // This part would heavily depend on the structure of the API's response
+                const apiStays = data.ecoFriendlyProperties.map(prop => ({
+                    name: prop.name,
+                    type: prop.propertyType,
+                    city: prop.address.city,
+                    location: prop.address.full,
+                    ecoFeatures: prop.sustainabilityFeatures, // Assuming an array of strings
+                    image: prop.imageUrl || 'https://placehold.co/400x250/CCCCCC/333333?text=Eco+Stay'
+                }));
+
+                displayStays(apiStays); // Call a helper function to display results
+            } catch (error) {
+                console.error('Error fetching eco stays:', error);
+                showMessage('Failed to fetch eco-friendly stays from API. Using simulated data.', 'error');
+                displayStays(getSimulatedStays(stayLocation)); // Fallback to simulated data
+            }
+            */
+            // --- API INTEGRATION CONCEPT: END ---
+
+            // --- SIMULATED STAYS (CURRENT IMPLEMENTATION) ---
+            // Fallback to simulated data if no API is integrated or if API fails
+            displayStays(getSimulatedStays(stayLocation));
+        });
+
+        // Helper function to get simulated stays based on location
+        function getSimulatedStays(searchLocation) {
+             const simulatedStays = [
+                {
+                    name: 'Eco-Lodge Green Oasis',
+                    type: 'Hotel',
+                    city: 'Denver',
+                    location: 'Near Denver (Mountain Retreat)',
+                    ecoFeatures: [
+                        'Powered by solar energy',
+                        'Rainwater harvesting system',
+                        'Locally sourced organic food',
+                        'Composting and waste reduction programs'
+                    ],
+                    image: 'https://placehold.co/400x250/A7F3D0/065F46?text=Eco+Lodge'
+                },
+                {
+                    name: 'Sustainable City Stay',
+                    type: 'Apartment',
+                    city: 'New York',
+                    location: 'New York (Urban Center)',
+                    ecoFeatures: [
+                        'LEED certified building',
+                        'Energy-efficient appliances',
+                        'Public transport accessible',
+                        'Recycling facilities on-site'
+                    ],
+                    image: 'https://placehold.co/400x250/BFDBFE/1E40AF?text=City+Apartment'
+                },
+                {
+                    name: 'Riverside Eco-Cabin',
+                    type: 'Cabin/Glamping',
+                    city: 'Portland',
+                    location: 'Near Portland (Forest Edge)',
+                    ecoFeatures: [
+                        'Constructed with reclaimed wood',
+                        'Compost toilets and greywater recycling',
+                        'Minimal light pollution',
+                        'Promotes active travel (hiking, biking)'
+                    ],
+                    image: 'https://placehold.co/400x250/D1FAE5/047857?text=Eco+Cabin'
+                },
+                {
+                    name: 'Community Farm Stay',
+                    type: 'Farm Stay/Homestay',
+                    city: 'Mumbai',
+                    location: 'Rural Mumbai (Countryside)',
+                    ecoFeatures: [
+                        'Organic farm-to-table meals',
+                        'Participate in sustainable farming',
+                        'Uses natural building materials',
+                        'Supports local community initiatives'
+                    ],
+                    image: 'https://placehold.co/400x250/FDE68A/92400E?text=Farm+Stay'
+                },
+                {
+                    name: 'Paris Green Hotel',
+                    type: 'Hotel',
+                    city: 'Paris',
+                    location: 'Central Paris',
+                    ecoFeatures: [
+                        'Green Key certified',
+                        'Water-saving fixtures',
+                        'Local and seasonal breakfast',
+                        'Bike rental available'
+                    ],
+                    image: 'https://placehold.co/400x250/C3D6E8/334155?text=Paris+Hotel'
+                },
+                {
+                    name: 'Berlin Eco Hostel',
+                    type: 'Hostel',
+                    city: 'Berlin',
+                    location: 'Berlin City Center',
+                    ecoFeatures: [
+                        'Recycled furniture',
+                        'Energy-efficient lighting',
+                        'Supports local art scene',
+                        'Vegan-friendly options'
+                    ],
+                    image: 'https://placehold.co/400x250/E0F2F7/0F766E?text=Berlin+Hostel'
+                },
+                {
+                    name: 'Himalayan Eco Retreat',
+                    type: 'Resort',
+                    city: 'Manali',
+                    location: 'Manali (Mountain Valley)',
+                    ecoFeatures: [
+                        'Sustainable architecture with local materials',
+                        'Waste management system',
+                        'Promotes responsible tourism',
+                        'Organic garden on-site'
+                    ],
+                    image: 'https://placehold.co/400x250/DDA0DD/800080?text=Himalayan+Retreat'
+                },
+                {
+                    name: 'Goa Green Villa',
+                    type: 'Villa',
+                    city: 'Goa',
+                    location: 'Coastal Goa',
+                    ecoFeatures: [
+                        'Rainwater harvesting',
+                        'Solar water heating',
+                        'Natural ventilation design',
+                        'Close to public beaches'
+                    ],
+                    image: 'https://placehold.co/400x250/90EE90/006400?text=Goa+Villa'
+                },
+                {
+                    name: 'Bengaluru Sustainable Stay',
+                    type: 'Guesthouse',
+                    city: 'Bengaluru',
+                    location: 'Bengaluru Tech Hub',
+                    ecoFeatures: [
+                        'Energy-efficient lighting',
+                        'Water recycling for gardening',
+                        'Promotes local artisans',
+                        'Compost pit for organic waste'
+                    ],
+                    image: 'https://placehold.co/400x250/ADD8E6/00008B?text=Bengaluru+Stay'
+                },
+                {
+                    name: 'Jaipur Heritage Eco-Hotel',
+                    type: 'Hotel',
+                    city: 'Jaipur',
+                    location: 'Jaipur Old City',
+                    ecoFeatures: [
+                        'Restored using traditional techniques',
+                        'Uses natural cooling methods',
+                        'Supports local crafts and culture',
+                        'Minimal plastic use'
+                    ],
+                    image: 'https://placehold.co/400x250/F08080/8B0000?text=Jaipur+Hotel'
+                },
+                {
+                    name: 'Kerala Backwater Eco-Homestay',
+                    type: 'Homestay',
+                    city: 'Kochi',
+                    location: 'Kochi Backwaters',
+                    ecoFeatures: [
+                        'Built with eco-friendly materials',
+                        'Serves traditional, local cuisine',
+                        'Offers guided nature walks',
+                        'Supports community-based tourism'
+                    ],
+                    image: 'https://placehold.co/400x250/87CEEB/4682B4?text=Kerala+Homestay'
+                },
+                {
+                    name: 'Chennai Green Resort',
+                    type: 'Resort',
+                    city: 'Chennai',
+                    location: 'Chennai Coast',
+                    ecoFeatures: [
+                        'Water treatment plant on-site',
+                        'Uses renewable energy for common areas',
+                        'Organic waste converted to biogas',
+                        'Native plant landscaping'
+                    ],
+                    image: 'https://placehold.co/400x250/FFD700/DAA520?text=Chennai+Resort'
+                }
+            ];
+
+            const searchLower = searchLocation.toLowerCase();
+            return simulatedStays.filter(stay =>
+                stay.city.toLowerCase().includes(searchLower) ||
+                stay.location.toLowerCase().includes(searchLower) ||
+                stay.name.toLowerCase().includes(searchLower) ||
+                (searchLower.includes("city") && stay.type.toLowerCase().includes("apartment")) ||
+                (searchLower.includes("rural") && stay.type.toLowerCase().includes("farm")) ||
+                (searchLower.includes("mountain") && stay.location.toLowerCase().includes("mountain")) ||
+                (searchLower.includes("forest") && stay.location.toLowerCase().includes("forest")) ||
+                (searchLower.includes("coast") && stay.location.toLowerCase().includes("coastal")) ||
+                (searchLower.includes("backwater") && stay.location.toLowerCase().includes("backwater")) ||
+                (searchLower.includes("heritage") && stay.name.toLowerCase().includes("heritage"))
+            );
+        }
+
+        // Helper function to display stays
+        function displayStays(stays) {
+            staysResultsContainer.innerHTML = ''; // Clear previous results
+
+            if (stays.length === 0) {
+                staysResultsContainer.innerHTML = `
+                    <p class="text-gray-600 text-center col-span-full">
+                        No eco-friendly stays found. Try a more general location or different dates.
+                    </p>
+                `;
+            } else {
+                stays.forEach(stay => {
+                    const stayCard = document.createElement('div');
+                    stayCard.className = 'card flex flex-col space-y-3';
+                    stayCard.innerHTML = `
+                        <img src="${stay.image}" alt="${stay.name}" class="rounded-lg mb-3 object-cover w-full h-40">
+                        <h3 class="text-xl font-semibold text-gray-700">${stay.name} (${stay.type})</h3>
+                        <p class="text-gray-600">Location: <span class="font-medium">${stay.location}</span></p>
+                        <div>
+                            <h4 class="font-medium text-gray-700 mb-1">Eco Features:</h4>
+                            <ul class="suggestion-list text-sm">
+                                ${stay.ecoFeatures.map(feature => `<li>${feature}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <button class="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-200 ease-in-out transform hover:scale-105" onclick="alert('This button would link to a real booking site for ${stay.name}!')">
+                            View Details / Book
+                        </button>
+                    `;
+                    staysResultsContainer.appendChild(stayCard);
+                });
+            }
+        }
+    </script>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section border">
+            <h3>EcoConnect</h3>
+        </div>
+
+        <div class="footer-section social">
+            <div class="follow border">
+                <i class="fa-brands fa-instagram"></i>
+            </div>
+
+            <div class="follow border">
+                <i class="fa-brands fa-twitter"></i>
+            </div>
+
+            <div class="follow border">
+                <i class="fa-brands fa-facebook"></i>
+            </div>
+        </div>
+        
+
+        <div class="footer-bottom border">
+        <p>© 2025  All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
