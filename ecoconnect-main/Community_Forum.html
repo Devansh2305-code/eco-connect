@@ -149,6 +149,25 @@
             <button class="suggest-event-btn" onclick="alert('In a live version, this button would lead to a form for submitting new event ideas for community review!');">Suggest an Event Idea</button>
         </section>
 
+<!--adding here -->
+
+        <div class="container">
+        <h2>Upload Your Media</h2>
+        <p>Select photos and videos to upload. Each file must be unique.</p>
+        <div class="upload-area">
+            <input type="file" id="media-upload" accept="image/*,video/*" multiple>
+            <label for="media-upload" class="custom-file-upload">
+                Choose Files
+            </label>
+        </div>
+        <div id="file-list" class="file-list">
+            </div>
+        </div>    
+        
+<!-- adding here ends -->
+
+        
+
         <section id="community-forum">
             <h2>Community Discussions</h2>
             <div class="comment-input-area">
@@ -209,4 +228,5 @@
     <script src="community_forum.js"></script>
 
 </body>
+
 </html>
