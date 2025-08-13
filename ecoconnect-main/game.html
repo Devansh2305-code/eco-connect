@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Carbon Credit Wallet – Hackathon Prototype</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #121a33;
+      --muted: #93a4b8;
+      --text: #e6eefc;
+      --accent: #7bd389;
+      --accent-2: #7da0ff;
+      --danger: #ff7d7d;
+      --ring: rgba(125,160,255,.45);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 800px at 20% -10%, #1a254d 0%, var(--bg) 55%),
+                  radial-gradient(900px 700px at 120% -20%, #1c4b3a 0%, transparent 60%);
+      color: var(--text);
+    }
+    .wrap { max-width: 1100px; margin: 24px auto; padding: 16px; }
+    .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px; }
+    @media (max-width: 980px){ .grid { grid-template-columns: 1fr; } }
+    .card { background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+            border: 1px solid rgba(255,255,255,.08); border-radius: 16px; padding: 16px; position: relative; }
+    .title { font-size: 22px; font-weight: 700; margin: 0 0 8px; }
+    .muted { color: var(--muted); font-size: 14px; }
+    .pill { display: inline-flex; align-items: center; gap: 8px; border: 1px dashed rgba(255,255,255,.15); padding: 8px 12px; border-radius: 999px; }
+    .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .col { display: flex; flex-direction: column; gap: 10px; }
+    .hl { font-size: 42px; font-weight: 800; letter-spacing: .5px; }
+    .sub { font-size: 16px; color: var(--muted); }
+    .kpi { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+    .kpi .card { padding: 12px; }
+    .kpi .val { font-size: 20px; font-weight: 700; }
+    .kpi .lbl { font-size: 12px; color: var(--muted); }
+    .progress { height: 10px; background: rgba(255,255,255,.08); border-radius: 999px; overflow: hidden; }
+    .bar { height: 100%; background: linear-gradient(90deg, var(--accent-2), var(--accent)); width: 0%; transition: width .6s ease; }
+    .badge { padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); font-size: 12px; }
+    .btn { cursor: pointer; border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.06); color: var(--text);
+           padding: 10px 14px; border-radius: 12px; font-weight: 600; transition: transform .08s ease, box-shadow .2s ease, border .2s ease; }
+    .btn:hover { border-color: var(--ring); box-shadow: 0 0 0 4px var(--ring); }
+    .btn:active { transform: translateY(1px); }
+    .btn-primary { background: linear-gradient(180deg, rgba(125,160,255,.25), rgba(125,160,255,.15)); }
+    .btn-danger { background: linear-gradient(180deg, rgba(255,125,125,.18), rgba(255,125,125,.1)); border-color: rgba(255,125,125,.4); }
+    input, select { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); color: var(--text); border-radius: 12px; padding: 10px 12px; outline: none; }
+    input:focus, select:focus { border-color: var(--ring); box-shadow: 0 0 0 4px var(--ring); }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 10px 8px; border-bottom: 1px solid rgba(255,255,255,.08); text-align: left; font-size: 14px; }
+    th { color: var(--muted); font-weight: 600; }
+    .tag { font-size: 11px; padding: 4px 8px; border-radius: 999px; border: 1px solid rgba(255,255,255,.18); color: var(--text); }
+    .project { display: grid; grid-template-columns: 64px 1fr auto; gap: 12px; align-items: center; padding: 10px; border-radius: 12px; border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.04); }
+    .project img { width: 64px; height: 64px; border-radius: 10px; object-fit: cover; }
+    .tiny { font-size: 12px; color: var(--muted); }
+    .header { display:flex; align-items:center; justify-content:space-between; gap: 12px; margin-bottom: 16px; }
+    .logo { display:flex; align-items:center; gap:10px; }
+    .logo .dot { width: 12px; height: 12px; border-radius: 50%; background: linear-gradient(180deg, var(--accent-2), var(--accent)); box-shadow: 0 0 0 6px rgba(125,160,255,.15); }
+    .footer { text-align:center; margin: 24px 0 8px; color: var(--muted); font-size: 12px; }
+    .ghost { opacity:.6 }
+    .r { color: var(--muted); font-variant-numeric: tabular-nums; }
+    .right { text-align:right }
+    .flex-end { display:flex; gap:10px; justify-content:flex-end; align-items:center; flex-wrap:wrap; }
+    .sep { height:1px; background: rgba(255,255,255,.08); margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div class="logo">
+        <div class="dot"></div>
+        <div>
+          <div style="font-weight:800; letter-spacing:.3px;">Carbon Wallet</div>
+          <div class="tiny">Hackathon Prototype · Local only</div>
+        </div>
+      </div>
+      <div class="row">
+        <button id="Home" class="btn">Home</button>
+        <button id="resetBtn" class="btn btn-danger">Reset Demo</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT: Wallet & Actions -->
+      <div class="col" style="gap:16px;">
+        <div class="card">
+          <div class="row" style="justify-content:space-between; align-items:flex-start;">
+            <div>
+              <h2 class="title">Your Carbon Wallet</h2>
+              <div class="muted">1 credit = 1 tonne CO₂e (demo)</div>
+            </div>
+            <div class="pill"><span class="tiny">Demo Registry:</span> <code id="demoRegistry">IN-VCM</code></div>
+          </div>
+
+          <div class="row" style="gap:24px; margin-top: 12px; align-items: flex-end;">
+            <div>
+              <div class="sub">Balance</div>
+              <div id="balance" class="hl">0.00</div>
+            </div>
+            <div>
+              <div class="sub">CO₂ Offset</div>
+              <div id="offset" class="hl">0.00 t</div>
+            </div>
+            <div>
+              <div class="sub">Badge</div>
+              <div id="badge" class="badge">Newbie</div>
+            </div>
+          </div>
+
+          <div class="kpi">
+            <div class="card">
+              <div class="lbl">Target: 10 credits</div>
+              <div class="progress" style="margin:8px 0 6px;">
+                <div id="targetBar" class="bar"></div>
+              </div>
+              <div class="tiny">Offset 10 tCO₂e to go Carbon Neutral (demo)</div>
+            </div>
+            <div class="card">
+              <div class="lbl">Transactions</div>
+              <div class="val" id="txCount">0</div>
+            </div>
+            <div class="card">
+              <div class="lbl">Last Activity</div>
+              <div class="val" id="lastActivity">–</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="card">
+          <div class="row" style="justify-content:space-between; align-items:center;">
+            <h3 class="title" style="font-size:18px; margin:0;">Earn Credits</h3>
+            <div class="tiny">Factors: 0.0002/km bike · 0.04/tree · 0.0007/kWh</div>
+          </div>
+          <div class="sep"></div>
+
+          <div class="row">
+            <div class="col" style="flex:1;">
+              <label class="muted tiny">Cycle / Walk (km)</label>
+              <input id="kmInput" type="number" min="0" placeholder="e.g., 5" />
+            </div>
+            <div class="col" style="flex:1;">
+              <label class="muted tiny">Trees Planted (count)</label>
+              <input id="treeInput" type="number" min="0" placeholder="e.g., 1" />
+            </div>
+            <div class="col" style="flex:1;">
+              <label class="muted tiny">Energy Saved (kWh)</label>
+              <input id="kwhInput" type="number" min="0" placeholder="e.g., 3" />
+            </div>
+          </div>
+
+          <div class="flex-end" style="margin-top:10px;">
+            <button id="estimateBtn" class="btn">Estimate Credits</button>
+            <button id="addCreditsBtn" class="btn btn-primary">Add to Wallet</button>
+          </div>
+
+          <div id="estimateLine" class="tiny ghost" style="margin-top:8px; display:none;"></div>
+        </div>
+
+        <!-- Transactions -->
+        <div class="card">
+          <h3 class="title" style="font-size:18px; margin:0 0 8px;">Transactions</h3>
+          <div style="overflow:auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Type</th>
+                  <th class="right">Credits</th>
+                  <th>Ref</th>
+                </tr>
+              </thead>
+              <tbody id="txBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Marketplace -->
+      <div class="col" style="gap:16px;">
+        <div class="card">
+          <h3 class="title" style="font-size:18px; margin:0;">Project Marketplace (Demo)</h3>
+          <div class="tiny">Spend credits to support projects. Generates a mock registry receipt.</div>
+          <div class="sep"></div>
+
+          <div class="col">
+            <div class="project">
+              <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=256&q=80" alt="Himachal Reforestation" />
+              <div>
+                <div style="font-weight:700;">Himachal Reforestation</div>
+                <div class="tiny">Community forestry · Verified (demo)</div>
+                <div class="row" style="gap:8px; margin-top:6px;">
+                  <span class="tag">1.00 credits</span>
+                  <span class="tag">~1 tCO₂e</span>
+                  <span class="tag">Ref: HPRF</span>
+                </div>
+              </div>
+              <button class="btn btn-primary" data-project='{"name":"Himachal Reforestation","cost":1,"code":"HPRF"}'>Support</button>
+            </div>
+
+            <div class="project">
+              <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=256&q=80" alt="UP Biochar" />
+              <div>
+                <div style="font-weight:700;">UP Biochar Farms</div>
+                <div class="tiny">Agricultural waste → biochar · Verified (demo)</div>
+                <div class="row" style="gap:8px; margin-top:6px;">
+                  <span class="tag">0.50 credits</span>
+                  <span class="tag">~0.5 tCO₂e</span>
+                  <span class="tag">Ref: UPBC</span>
+                </div>
+              </div>
+              <button class="btn btn-primary" data-project='{"name":"UP Biochar Farms","cost":0.5,"code":"UPBC"}'>Support</button>
+            </div>
+
+            <div class="project">
+              <img src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?w=256&q=80" alt="Rooftop Solar" />
+              <div>
+                <div style="font-weight:700;">Rooftop Solar India</div>
+                <div class="tiny">Residential solar net-metering · Verified (demo)</div>
+                <div class="row" style="gap:8px; margin-top:6px;">
+                  <span class="tag">0.25 credits</span>
+                  <span class="tag">~0.25 tCO₂e</span>
+                  <span class="tag">Ref: RSIN</span>
+                </div>
+              </div>
+              <button class="btn btn-primary" data-project='{"name":"Rooftop Solar India","cost":0.25,"code":"RSIN"}'>Support</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="title" style="font-size:18px; margin:0;">How this Works</h3>
+          <ul class="tiny">
+            <!-- <li>Local-only: data saved in your browser <code>localStorage</code>.</li> -->
+            <li>Credits are simulated using simple factors (transparent below).</li>
+            <!-- <li>Each support action generates a mock registry ID and JSON receipt.</li> -->
+            <!-- <li>Swap to your backend later (Firebase/Supabase/Express) with the same shape.</li> -->
+          </ul>
+          <div class="sep"></div>
+          <div class="row" style="justify-content:space-between;">
+            <div>
+              <div class="muted tiny">Emission Factors (demo)</div>
+              <div class="tiny">Bike/Walk: <b>0.0002</b> credits per km</div>
+              <div class="tiny">Tree planted: <b>0.04</b> credits each</div>
+              <div class="tiny">Energy saved: <b>0.0007</b> credits per kWh</div>
+            </div>
+            <div class="pill"><span class="tiny">Goal:</span> <b>10 credits</b></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">© Hackathon Prototype · Replace factors/IDs with real ones when you go live.</div>
+  </div>
+
+  <script>
+    // ------------------------
+    // Storage & State
+    // ------------------------
+    const STORE_KEY = 'carbon-wallet-demo-v1';
+
+    const defaultState = {
+      balance: 0,
+      transactions: [],
+      lastActivity: null,
+    };
+
+    function loadState(){
+      try { return JSON.parse(localStorage.getItem(STORE_KEY)) || { ...defaultState }; }
+      catch(e){ return { ...defaultState }; }
+    }
+    function saveState(state){ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+
+    let state = loadState();
+
+    // ------------------------
+    // Utils
+    // ------------------------
+    const $ = (sel) => document.querySelector(sel);
+    const fmt = (n) => (Math.round(n * 100) / 100).toFixed(2);
+    const nowISO = () => new Date().toISOString();
+    function badgeFor(credits){
+      if (credits >= 20) return 'Gold';
+      if (credits >= 10) return 'Silver';
+      if (credits >= 5) return 'Bronze';
+      return 'Newbie';
+    }
+    function registryId(prefix="IN-VCM"){
+      const y = new Date().getFullYear();
+      const r = Math.floor(Math.random()*900000 + 100000);
+      return `${prefix}-${y}-${r}`;
+    }
+
+    // ------------------------
+    // Rendering
+    // ------------------------
+    function render(){
+      $('#balance').textContent = fmt(state.balance);
+      $('#offset').textContent  = fmt(state.balance) + ' t';
+      $('#badge').textContent   = badgeFor(state.balance);
+      $('#txCount').textContent = state.transactions.length;
+      $('#lastActivity').textContent = state.lastActivity ? new Date(state.lastActivity).toLocaleString() : '–';
+      const pct = Math.min(100, (state.balance/10)*100);
+      $('#targetBar').style.width = pct + '%';
+
+      // Transactions table
+      const body = $('#txBody');
+      body.innerHTML = '';
+      state.transactions.slice().reverse().forEach(tx => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="tiny">${new Date(tx.timestamp).toLocaleString()}</td>
+          <td>${tx.type}</td>
+          <td class="right">${tx.sign === '-' ? '-' : ''}${fmt(tx.credits)}</td>
+          <td class="tiny"><code>${tx.ref || '—'}</code></td>
+        `;
+        body.appendChild(tr);
+      });
+    }
+
+    function addTx({type, credits, sign = '+', ref}){
+      const signed = sign === '-' ? -credits : credits;
+      state.balance = Math.max(0, state.balance + signed);
+      state.transactions.push({ type, credits, sign, ref, timestamp: nowISO() });
+      state.lastActivity = nowISO();
+      saveState(state); render();
+    }
+
+    // ------------------------
+    // Actions (Earn)
+    // ------------------------
+    const FACTORS = { perKm: 0.0002, perTree: 0.04, perKwh: 0.0007 };
+
+    function estimate(){
+      const km   = parseFloat($('#kmInput').value || 0);
+      const tree = parseFloat($('#treeInput').value || 0);
+      const kwh  = parseFloat($('#kwhInput').value || 0);
+      const earn = km*FACTORS.perKm + tree*FACTORS.perTree + kwh*FACTORS.perKwh;
+      return { km, tree, kwh, earn };
+    }
+
+    function showEstimate(){
+      const {km, tree, kwh, earn} = estimate();
+      $('#estimateLine').style.display = 'block';
+      $('#estimateLine').innerHTML = `Estimated credits: <b>${fmt(earn)}</b> · from ${km} km, ${tree} trees, ${kwh} kWh`;
+    }
+
+    function addEarned(){
+      const {km, tree, kwh, earn} = estimate();
+      if (earn <= 0) { alert('Enter some values to earn credits.'); return; }
+      if (km>0) addTx({ type: `Commute shift (${km} km)`, credits: km*FACTORS.perKm, sign: '+', ref: registryId('ACT-CYCLE') });
+      if (tree>0) addTx({ type: `Trees planted (${tree})`, credits: tree*FACTORS.perTree, sign: '+', ref: registryId('ACT-TREE') });
+      if (kwh>0) addTx({ type: `Energy saved (${kwh} kWh)`, credits: kwh*FACTORS.perKwh, sign: '+', ref: registryId('ACT-KWH') });
+      $('#estimateLine').style.display = 'none';
+      $('#kmInput').value = $('#treeInput').value = $('#kwhInput').value = '';
+    }
+
+    // ------------------------
+    // Marketplace (Spend)
+    // ------------------------
+    document.querySelectorAll('.project .btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const proj = JSON.parse(btn.getAttribute('data-project'));
+        if (state.balance < proj.cost) { alert('Not enough credits. Earn more to support this project.'); return; }
+        const rid = registryId(proj.code);
+        addTx({ type: `Support: ${proj.name}`, credits: proj.cost, sign: '-', ref: rid });
+        // Offer JSON receipt download (client-side only)
+        const receipt = {
+          project: proj.name,
+          cost_credits: proj.cost,
+          registry_id: rid,
+          date: nowISO(),
+          wallet_balance_after: state.balance,
+          note: 'Hackathon demo receipt (not a real offset).'
+        };
+        const blob = new Blob([JSON.stringify(receipt, null, 2)], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = `${proj.code}-receipt.json`; a.click();
+        setTimeout(()=>URL.revokeObjectURL(url), 1000);
+      });
+    });
+
+    // ------------------------
+    // Controls
+    // ------------------------
+    $('#estimateBtn').addEventListener('click', showEstimate);
+    $('#addCreditsBtn').addEventListener('click', addEarned);
+    $('#resetBtn').addEventListener('click', () => {
+      if (!confirm('Reset demo wallet? This clears local data.')) return;
+      state = { ...defaultState }; saveState(state); render();
+    });
+    // $('#exportBtn').addEventListener('click', () => {
+    //   const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+    //   const url = URL.createObjectURL(blob);
+    //   const a = document.createElement('a');
+    //   a.href = url; a.download = 'carbon-wallet-export.json'; a.click();
+    //   setTimeout(()=>URL.revokeObjectURL(url), 1000);
+    // });
+
+    // Init
+    render();
+    document.getElementById("Home").addEventListener("click", function() {
+        window.location.href = "index.html"; // navigate to index.html
+    });
+  </script>
+</body>
+</html>

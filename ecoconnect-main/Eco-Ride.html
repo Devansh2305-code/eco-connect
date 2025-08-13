@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco-ride Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Your existing style.css content starts here */
+        * {
+            margin : 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 20px 20px;
+            background: #2A7B9B;
+            background: linear-gradient(90deg, rgba(42, 123, 155, 1) 0%, rgba(62, 157, 145, 1) 22%, rgba(72, 173, 140, 1) 33%, rgba(87, 199, 133, 1) 50%, rgba(237, 221, 83, 1) 100%); /* Green background */
+            color: white; /* White text */
+            height: 80px;
+            position: fixed;
+            width: 100%;
+            top: 0; /* Added: Ensures the navbar is always at the very top of the viewport */
+            z-index: 1000; /* Ensure navbar stays on top */
+        }
+
+
+        .first-box {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        /* Note: Your HTML uses .nav-links, but your CSS provided .links.
+           I'm assuming .nav-links is the correct class for these styles.
+           If .links was intended for something else, please clarify. */
+        .nav-links { /* Changed from .links to .nav-links to match HTML */
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            font-size: 1.2rem; /* Adjusted for better fit with text */
+            padding: 10px; /* Added padding to make links clickable */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth hover */
+        }
+
+        .border {
+            border: 1px solid transparent; /* Changed to transparent, as your hover adds background color */
+            /* Removed padding here as it's now in .nav-links */
+        }
+
+        .border:hover {
+            background-color: rgba(255, 255, 255, 0.1); /* Light hover effect */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 2.0rem; /* Adjusted for better fit */
+            font-weight: bold; /* Added bold for prominence */
+        }
+
+        .logo span {
+            margin-left: 10px; /* Space between icon and text */
+        }
+
+        .profile {
+            font-size : 1.2rem; /* Adjusted for consistency */
+        }
+
+        .nav-links a{
+            text-decoration: none; /* Remove underline from links */
+            color: white; /* White text for links */
+            display: flex; /* Allow icon and text to align */
+            align-items: center;
+        }
+
+        .nav-links a i {
+            margin-right: 8px; /* Space between icon and text */
+        }
+
+        /* Your hero-section styles are not directly used on this page,
+           but I'll keep them here in case they are used elsewhere or for reference. */
+        .hero-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 60vh; /* Full viewport height */
+            background:linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+            padding-top: 80px; /* To push content below fixed header */
+        }
+
+        .hero-content {
+            display:flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            color: #333; /* Dark text for contrast */
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+
+        .hero-section p {
+            font-size: 1.5rem;
+            color: #666; /* Lighter text for contrast */
+            margin-bottom: 20px;
+        }
+
+        .hero-section a {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            color: white; /* White text */
+            background-color: #2A7B9B; /* Button background */
+            border: none;
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer;
+            text-decoration:none;
+            margin-top: 30px;
+        }
+
+        .hero-button:hover {
+            background: #aecbee;
+            background: radial-gradient(circle, rgba(174, 203, 238, 1) 72%, rgba(148, 187, 233, 1) 100%);
+        }
+
+        /* Eco Commute Planner custom styles start here (merged) */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+            color: #334155; /* Darker text color */
+            padding-top: 80px; /* Crucial: Pushes content below the fixed navbar */
+        }
+        .container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 4.5rem;
+            background-color: #ffffff;
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .input-group label {
+            font-weight: 600;
+            color: #475569; /* Slightly lighter label color */
+        }
+        .input-group input[type="text"],
+        .input-group input[type="date"] {
+            border: 1px solid #cbd5e1; /* Light gray border */
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+        .input-group input[type="text"]:focus,
+        .input-group input[type="date"]:focus {
+            outline: none;
+            border-color: #60a5fa; /* Blue focus border */
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+        }
+        .btn-primary {
+            background-color: #22c55e; /* Green button */
+            color: white;
+            padding: 0.85rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 700;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 10px rgba(34, 197, 94, 0.3);
+        }
+        .btn-primary:hover {
+            background-color: #16a34a; /* Darker green on hover */
+            transform: translateY(-1px);
+        }
+        .card {
+            background-color: #f8fafc; /* Lighter card background */
+            border: 1px solid #e2e8f0; /* Light border */
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .carbon-footprint {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #059669; /* Darker green for footprint */
+        }
+        .suggestion-list li {
+            margin-bottom: 0.5rem;
+            color: #475569;
+        }
+        .suggestion-list li::before {
+            content: '•';
+            color: #22c55e; /* Green bullet point */
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+
+        .footer {
+ background: #2C3E50;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #4CA1AF, #2C3E50);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #4CA1AF, #2C3E50); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  color: white;
+  padding: 20px 20px 20px 20px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* flex-wrap: wrap; */
+}
+
+.footer-section {
+  display : flex;
+  flex: 1;
+  margin: 10px;
+}
+
+.footer-section h3{
+    font-size: 1.7rem;
+    text-align: center;
+}
+
+.footer-section h4 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li a {
+  color: white;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  text-decoration: underline;
+}
+
+.footer-section .social a {
+  margin-right: 10px;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  padding-top: 10px;
+  font-size: 0.9rem;
+}
+
+.follow {
+    padding : 20px;
+    font-size: 1.6rem;
+}
+    </style>
+</head>
+<body class="antialiased">
+    <header>
+        <div class="navbar border">
+            <div class="logo border">
+                <i class="fa-solid fa-leaf"></i>
+                <span>EcoConnect</span>
+            </div>
+
+            <div class="first-box">
+                <div class="nav-links border">
+                    <div class="link">
+                        <a href="index.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span>Home</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-links border">
+                    <div class="link">
+                        <a href="Community_Forum.html">
+                        <i class="fa-solid fa-people-group"></i>
+                        <span>Community Forum</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-links border">
+                    <div class="link">
+                        <a href="Eco-Ride.html">
+                        <i class="fa-solid fa-car-side"></i>
+                        <span>Eco-Ride</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-links border">
+                    <div class="link">
+                        <a href="Shopping_Assistant.html">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span>Shopping Assistant</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="nav-links border">
+                    <div class="link">
+                        <a href="Education.html">
+                        <i class="fa-solid fa-book"></i>
+                        <span>Education</span>
+                        </a>
+                    </div>
+                </div>
+
+                 <div class="nav-links border">
+                <div class="link">
+                    <a href="game.html">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>Wallet</span>
+                    </a>
+                </div>
+            </div>
+            </div>
+
+            <div class="nav-links border">
+                <div class="profile">
+                    <a href="Profile.html">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profile</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="text-4xl font-extrabold text-center mb-6 text-gray-800">
+            Eco Commute Planner
+        </h1>
+        <p class="text-center text-lg mb-8 text-gray-600">
+            Plan your journey, minimize your carbon footprint.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="input-group">
+                <label for="origin" class="block text-sm mb-2">Departure Location:</label>
+                <input type="text" id="origin" placeholder="e.g., New York City" class="focus:border-blue-500">
+            </div>
+            <div class="input-group">
+                <label for="destination" class="block text-sm mb-2">Arrival Location:</label>
+                <input type="text" id="destination" placeholder="e.g., Los Angeles" class="focus:border-blue-500">
+            </div>
+        </div>
+
+        <div class="text-center mb-10">
+            <button id="calculateBtn" class="btn-primary">
+                Calculate My Eco-Route
+            </button>
+        </div>
+
+        <div id="results" class="hidden">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Your Eco-Friendly Options</h2>
+
+            <div id="messageBox" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4" role="alert">
+                <strong class="font-bold">Error!</strong>
+                <span class="block sm:inline" id="messageText"></span>
+            </div>
+
+            <div id="optionsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                </div>
+
+            <div class="bg-blue-50 p-6 rounded-xl shadow-md mb-10">
+                <h3 class="text-2xl font-bold text-blue-800 mb-4">Go Even Greener!</h3>
+                <p class="text-blue-700 mb-4">
+                    Every journey is an opportunity to reduce your environmental impact. Here are some general tips:
+                </p>
+                <ul class="list-disc pl-5 text-blue-700 space-y-2">
+                    <li>For short distances, consider walking or cycling. It's healthy, free, and produces zero emissions!</li>
+                    <li>If driving, carpool with others to share the carbon burden.</li>
+                    <li>Opt for public transport (buses, trains) whenever possible, especially for intercity travel.</li>
+                    <li>When flying, choose direct flights and fly economy class to reduce your footprint.</li>
+                    <li>Consider offsetting your unavoidable emissions through certified carbon offset programs.</li>
+                    <li>Travel light! Less luggage means less fuel consumed.</li>
+                </ul>
+            </div>
+
+            <div class="bg-green-50 p-6 rounded-xl shadow-md">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Low Carbon Stays & Living</h2>
+                <p class="text-center text-lg mb-8 text-gray-600">
+                    Find eco-friendly accommodations and explore sustainable living options.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="input-group">
+                        <label for="stayLocation" class="block text-sm mb-2">Location:</label>
+                        <input type="text" id="stayLocation" placeholder="e.g., Paris, New York, Rural" class="focus:border-blue-500">
+                    </div>
+                    <div class="input-group">
+                        <label for="checkInDate" class="block text-sm mb-2">Check-in Date:</label>
+                        <input type="date" id="checkInDate" class="focus:border-blue-500">
+                    </div>
+                    <div class="input-group">
+                        <label for="checkOutDate" class="block text-sm mb-2">Check-out Date:</label>
+                        <input type="date" id="checkOutDate" class="focus:border-blue-500">
+                    </div>
+                </div>
+
+                <div class="text-center mb-10">
+                    <button id="searchStaysBtn" class="btn-primary">
+                        Search Eco Stays
+                    </button>
+                </div>
+
+                <div id="staysResults" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section border">
+            <h3>EcoConnect</h3>
+        </div>
+
+        <div class="footer-section social">
+            <div class="follow border">
+                <i class="fa-brands fa-instagram"></i>
+            </div>
+
+            <div class="follow border">
+                <i class="fa-brands fa-twitter"></i>
+            </div>
+
+            <div class="follow border">
+                <i class="fa-brands fa-facebook"></i>
+            </div>
+        </div>
+        
+
+        <div class="footer-bottom border">
+        <p>© 2025  All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        // Get references to DOM elements for travel planning
+        const calculateBtn = document.getElementById('calculateBtn');
+        const originInput = document.getElementById('origin');
+        const destinationInput = document.getElementById('destination');
+        const resultsSection = document.getElementById('results');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const messageBox = document.getElementById('messageBox');
+        const messageText = document.getElementById('messageText');
+
+        // Get references to DOM elements for stays
+        const searchStaysBtn = document.getElementById('searchStaysBtn');
+        const stayLocationInput = document.getElementById('stayLocation');
+        const checkInDateInput = document.getElementById('checkInDate');
+        const checkOutDateInput = document.getElementById('checkOutDate');
+        const staysResultsContainer = document.getElementById('staysResults');
+
+        // Function to display a message in the message box
+        function showMessage(message, type = 'error') {
+            messageText.textContent = message;
+            messageBox.classList.remove('hidden');
+            if (type === 'error') {
+                messageBox.classList.remove('bg-green-100', 'border-green-400', 'text-green-700');
+                messageBox.classList.add('bg-red-100', 'border-red-400', 'text-red-700');
+            } else {
+                messageBox.classList.remove('bg-red-100', 'border-red-400', 'text-green-700');
+                messageBox.classList.add('bg-green-100', 'border-green-400', 'text-green-700');
+            }
+        }
+
+        // Function to hide the message box
+        function hideMessageBox() {
+            messageBox.classList.add('hidden');
+        }
+
+        // Simulate carbon footprint calculation based on mode and distance
+        // In a real application, this would involve complex APIs and data.
+        function calculateCarbonFootprint(mode, distanceKm) {
+            let carbonPerKm; // kg CO2e per km per passenger
+            switch (mode) {
+                case 'airplane':
+                    carbonPerKm = 0.15; // High for air travel
+                    break;
+                case 'car':
+                    carbonPerKm = 0.08; // Assumes average car, 1 passenger
+                    break;
+                case 'train':
+                    carbonPerKm = 0.03; // Generally lower for trains
+                    break;
+                case 'bus':
+                    carbonPerKm = 0.05; // Lower than car, higher than train
+                    break;
+                case 'boat':
+                    carbonPerKm = 0.10; // Varies greatly, using a moderate value
+                    break;
+                case 'walk':
+                case 'bicycle':
+                    carbonPerKm = 0; // Zero direct emissions
+                    break;
+                default:
+                    carbonPerKm = 0.07; // Default average
+            }
+            // Add some randomness for more realistic feel
+            const variability = (Math.random() * 0.2 - 0.1); // +/- 10%
+            return (carbonPerKm * distanceKm * (1 + variability)).toFixed(2);
+        }
+
+        // Simulate distance calculation (very basic, just for demonstration)
+        // In a real application, this would be replaced by an API call.
+        function simulateDistance(origin, destination) {
+            // --- API INTEGRATION CONCEPT: START ---
+            /*
+            // This is how you would typically make an API call to get distance.
+            // You would replace 'YOUR_API_KEY' with your actual key from a service like Google Maps.
+            // The URL and parameters would vary based on the specific API.
+            const API_KEY = 'YOUR_API_KEY'; // Replace with your actual API key
+            const API_ENDPOINT = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(destination)}&key=${API_KEY}`;
+
+            return fetch(API_ENDPOINT)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Parse the response to get the distance.
+                    // The exact path to distance would depend on the API's JSON structure.
+                    // Example for Google Distance Matrix:
+                    if (data.rows && data.rows.length > 0 && data.rows[0].elements && data.rows[0].elements.length > 0) {
+                        const element = data.rows[0].elements[0];
+                        if (element.status === 'OK') {
+                            const distanceMeters = element.distance.value; // Distance in meters
+                            return distanceMeters / 1000; // Convert to kilometers
+                        } else {
+                            console.error('API Error:', element.status);
+                            showMessage(`Could not get distance from API: ${element.status}`, 'error');
+                            return Math.floor(Math.random() * 1900) + 100; // Fallback to simulated distance
+                        }
+                    } else {
+                        console.error('Unexpected API response structure:', data);
+                        showMessage('Unexpected response from distance API.', 'error');
+                        return Math.floor(Math.random() * 1900) + 100; // Fallback to simulated distance
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching distance:', error);
+                    showMessage('Failed to connect to distance API. Using simulated data.', 'error');
+                    return Math.floor(Math.random() * 1900) + 100; // Fallback to simulated distance
+                });
+            */
+            // --- API INTEGRATION CONCEPT: END ---
+
+
+            // --- SIMULATED DISTANCE (CURRENT IMPLEMENTATION) ---
+            const knownRoutes = {
+                'Andhra Pradesh to Arunachal Pradesh': 2250, // km
+'Andhra Pradesh to Assam': 1980, // km
+'Andhra Pradesh to Bihar': 1400, // km
+'Andhra Pradesh to Chhattisgarh': 670, // km
+'Andhra Pradesh to Goa': 890, // km
+'Andhra Pradesh to Gujarat': 1370, // km
+'Andhra Pradesh to Haryana': 2020, // km
+'Andhra Pradesh to Himachal Pradesh': 2060, // km
+'Andhra Pradesh to Jharkhand': 1140, // km
+'Andhra Pradesh to Karnataka': 620, // km
+'Andhra Pradesh to Kerala': 1210, // km
+'Andhra Pradesh to Madhya Pradesh': 1010, // km
+'Andhra Pradesh to Maharashtra': 1050, // km
+'Andhra Pradesh to Manipur': 2100, // km
+'Andhra Pradesh to Meghalaya': 1950, // km
+'Andhra Pradesh to Mizoram': 1890, // km
+'Andhra Pradesh to Nagaland': 2180, // km
+'Andhra Pradesh to Odisha': 890, // km
+'Andhra Pradesh to Punjab': 2020, // km
+'Andhra Pradesh to Rajasthan': 1550, // km
+'Andhra Pradesh to Sikkim': 1830, // km
+'Andhra Pradesh to Tamil Nadu': 490, // km
+'Andhra Pradesh to Telangana': 270, // km
+'Andhra Pradesh to Tripura': 1750, // km
+'Andhra Pradesh to Uttar Pradesh': 1430, // km
+'Andhra Pradesh to Uttarakhand': 1930, // km
+'Andhra Pradesh to West Bengal': 1340, // km
+'Arunachal Pradesh to Assam': 270, // km
+'Arunachal Pradesh to Bihar': 1070, // km
+'Arunachal Pradesh to Chhattisgarh': 1720, // km
+'Arunachal Pradesh to Goa': 3020, // km
+'Arunachal Pradesh to Gujarat': 2690, // km
+'Arunachal Pradesh to Haryana': 2110, // km
+'Arunachal Pradesh to Himachal Pradesh': 2070, // km
+'Arunachal Pradesh to Jharkhand': 1170, // km
+'Arunachal Pradesh to Karnataka': 2860, // km
+'Arunachal Pradesh to Kerala': 3390, // km
+'Arunachal Pradesh to Madhya Pradesh': 2100, // km
+'Arunachal Pradesh to Maharashtra': 2870, // km
+'Arunachal Pradesh to Manipur': 320, // km
+'Arunachal Pradesh to Meghalaya': 300, // km
+'Arunachal Pradesh to Mizoram': 480, // km
+'Arunachal Pradesh to Nagaland': 210, // km
+'Arunachal Pradesh to Odisha': 1370, // km
+'Arunachal Pradesh to Punjab': 2110, // km
+'Arunachal Pradesh to Rajasthan': 2200, // km
+'Arunachal Pradesh to Sikkim': 620, // km
+'Arunachal Pradesh to Tamil Nadu': 2610, // km
+'Arunachal Pradesh to Telangana': 2360, // km
+'Arunachal Pradesh to Tripura': 540, // km
+'Arunachal Pradesh to Uttar Pradesh': 1570, // km
+'Arunachal Pradesh to Uttarakhand': 1950, // km
+'Arunachal Pradesh to West Bengal': 910, // km
+'Assam to Bihar': 830, // km
+'Assam to Chhattisgarh': 1450, // km
+'Assam to Goa': 2750, // km
+'Assam to Gujarat': 2440, // km
+'Assam to Haryana': 1930, // km
+'Assam to Himachal Pradesh': 1900, // km
+'Assam to Jharkhand': 900, // km
+'Assam to Karnataka': 2600, // km
+'Assam to Kerala': 3130, // km
+'Assam to Madhya Pradesh': 1850, // km
+'Assam to Maharashtra': 2610, // km
+'Assam to Manipur': 330, // km
+'Assam to Meghalaya': 80, // km
+'Assam to Mizoram': 360, // km
+'Assam to Nagaland': 300, // km
+'Assam to Odisha': 1110, // km
+'Assam to Punjab': 1930, // km
+'Assam to Rajasthan': 1980, // km
+'Assam to Sikkim': 420, // km
+'Assam to Tamil Nadu': 2350, // km
+'Assam to Telangana': 2100, // km
+'Assam to Tripura': 330, // km
+'Assam to Uttar Pradesh': 1350, // km
+'Assam to Uttarakhand': 1770, // km
+'Assam to West Bengal': 650, // km
+'Bihar to Chhattisgarh': 750, // km
+'Bihar to Bihar': 0, //km
+'Bihar to Goa': 2030, // km
+'Bihar to Gujarat': 1620, // km
+'Bihar to Haryana': 1250, // km
+'Bihar to Himachal Pradesh': 1240, // km
+'Bihar to Jharkhand': 310, // km
+'Bihar to Karnataka': 2010, // km
+'Bihar to Kerala': 2610, // km
+'Bihar to Madhya Pradesh': 1030, // km
+'Bihar to Maharashtra': 1820, // km
+'Bihar to Manipur': 1110, // km
+'Bihar to Meghalaya': 850, // km
+'Bihar to Mizoram': 990, // km
+'Bihar to Nagaland': 1120, // km
+'Bihar to Odisha': 740, // km
+'Bihar to Punjab': 1250, // km
+'Bihar to Rajasthan': 1180, // km
+'Bihar to Sikkim': 500, // km
+'Bihar to Tamil Nadu': 1850, // km
+'Bihar to Telangana': 1430, // km
+'Bihar to Tripura': 810, // km
+'Bihar to Uttar Pradesh': 550, // km
+'Bihar to Uttarakhand': 1090, // km
+'Bihar to West Bengal': 590, // km
+'Chhattisgarh to Goa': 1300, // km
+'Chhattisgarh to Gujarat': 1190, // km
+'Chhattisgarh to Haryana': 1450, // km
+'Chhattisgarh to Himachal Pradesh': 1480, // km
+'Chhattisgarh to Jharkhand': 560, // km
+'Chhattisgarh to Karnataka': 1270, // km
+'Chhattisgarh to Kerala': 1880, // km
+'Chhattisgarh to Madhya Pradesh': 610, // km
+'Chhattisgarh to Maharashtra': 1180, // km
+'Chhattisgarh to Manipur': 1650, // km
+'Chhattisgarh to Meghalaya': 1440, // km
+'Chhattisgarh to Mizoram': 1460, // km
+'Chhattisgarh to Nagaland': 1700, // km
+'Chhattisgarh to Odisha': 560, // km
+'Chhattisgarh to Punjab': 1450, // km
+'Chhattisgarh to Rajasthan': 1080, // km
+'Chhattisgarh to Sikkim': 1220, // km
+'Chhattisgarh to Tamil Nadu': 1150, // km
+'Chhattisgarh to Telangana': 680, // km
+'Chhattisgarh to Tripura': 1290, // km
+'Chhattisgarh to Uttar Pradesh': 780, // km
+'Chhattisgarh to Uttarakhand': 1340, // km
+'Chhattisgarh to West Bengal': 890, // km
+'Goa to Gujarat': 1080, // km
+'Goa to Haryana': 2150, // km
+'Goa to Himachal Pradesh': 2210, // km
+'Goa to Jharkhand': 1860, // km
+'Goa to Karnataka': 620, // km
+'Goa to Kerala': 1060, // km
+'Goa to Madhya Pradesh': 1180, // km
+'Goa to Maharashtra': 510, // km
+'Goa to Manipur': 2920, // km
+'Goa to Meghalaya': 2730, // km
+'Goa to Mizoram': 2720, // km
+'Goa to Nagaland': 2990, // km
+'Goa to Odisha': 1720, // km
+'Goa to Punjab': 2150, // km
+'Goa to Rajasthan': 1610, // km
+'Goa to Sikkim': 2520, // km
+'Goa to Tamil Nadu': 930, // km
+'Goa to Telangana': 670, // km
+'Goa to Tripura': 2560, // km
+'Goa to Uttar Pradesh': 1830, // km
+'Goa to Uttarakhand': 2130, // km
+'Goa to West Bengal': 2150, // km
+'Gujarat to Haryana': 1160, // km
+'Gujarat to Himachal Pradesh': 1230, // km
+'Gujarat to Jharkhand': 1620, // km
+'Gujarat to Karnataka': 1570, // km
+'Gujarat to Kerala': 2120, // km
+'Gujarat to Madhya Pradesh': 610, // km
+'Gujarat to Maharashtra': 580, // km
+'Gujarat to Manipur': 2710, // km
+'Gujarat to Meghalaya': 2460, // km
+'Gujarat to Mizoram': 2560, // km
+'Gujarat to Nagaland': 2740, // km
+'Gujarat to Odisha': 1750, // km
+'Gujarat to Punjab': 1160, // km
+'Gujarat to Rajasthan': 650, // km
+'Gujarat to Sikkim': 2090, // km
+'Gujarat to Tamil Nadu': 1730, // km
+'Gujarat to Telangana': 1110, // km
+'Gujarat to Tripura': 2380, // km
+'Gujarat to Uttar Pradesh': 1160, // km
+'Gujarat to Uttarakhand': 1190, // km
+'Gujarat to West Bengal': 2010, // km
+'Haryana to Himachal Pradesh': 70, // km
+'Haryana to Jharkhand': 1470, // km
+'Haryana to Karnataka': 2470, // km
+'Haryana to Kerala': 3090, // km
+'Haryana to Madhya Pradesh': 1040, // km
+'Haryana to Maharashtra': 1690, // km
+'Haryana to Manipur': 2260, // km
+'Haryana to Meghalaya': 1980, // km
+'Haryana to Mizoram': 2190, // km
+'Haryana to Nagaland': 2230, // km
+'Haryana to Odisha': 1840, // km
+'Haryana to Punjab': 0, // km
+'Haryana to Rajasthan': 540, // km
+'Haryana to Sikkim': 1510, // km
+'Haryana to Tamil Nadu': 2490, // km
+'Haryana to Telangana': 1870, // km
+'Haryana to Tripura': 2030, // km
+'Haryana to Uttar Pradesh': 740, // km
+'Haryana to Uttarakhand': 160, // km
+'Haryana to West Bengal': 1830, // km
+'Himachal Pradesh to Jharkhand': 1470, // km
+'Himachal Pradesh to Karnataka': 2520, // km
+'Himachal Pradesh to Kerala': 3140, // km
+'Himachal Pradesh to Madhya Pradesh': 1090, // km
+'Himachal Pradesh to Maharashtra': 1760, // km
+'Himachal Pradesh to Manipur': 2230, // km
+'Himachal Pradesh to Meghalaya': 1960, // km
+'Himachal Pradesh to Mizoram': 2170, // km
+'Himachal Pradesh to Nagaland': 2200, // km
+'Himachal Pradesh to Odisha': 1850, // km
+'Himachal Pradesh to Punjab': 70, // km
+'Himachal Pradesh to Rajasthan': 610, // km
+'Himachal Pradesh to Sikkim': 1480, // km
+'Himachal Pradesh to Tamil Nadu': 2540, // km
+'Himachal Pradesh to Telangana': 1910, // km
+'Himachal Pradesh to Tripura': 2010, // km
+'Himachal Pradesh to Uttar Pradesh': 750, // km
+'Himachal Pradesh to Uttarakhand': 150, // km
+'Himachal Pradesh to West Bengal': 1820, // km
+'Jharkhand to Karnataka': 1760, // km
+'Jharkhand to Kerala': 2340, // km
+'Jharkhand to Madhya Pradesh': 1010, // km
+'Jharkhand to Maharashtra': 1720, // km
+'Jharkhand to Manipur': 1110, // km
+'Jharkhand to Meghalaya': 890, // km
+'Jharkhand to Mizoram': 950, // km
+'Jharkhand to Nagaland': 1160, // km
+'Jharkhand to Odisha': 430, // km
+'Jharkhand to Punjab': 1470, // km
+'Jharkhand to Rajasthan': 1300, // km
+'Jharkhand to Sikkim': 690, // km
+'Jharkhand to Tamil Nadu': 1570, // km
+'Jharkhand to Telangana': 1210, // km
+'Jharkhand to Tripura': 760, // km
+'Jharkhand to Uttar Pradesh': 730, // km
+'Jharkhand to Uttarakhand': 1320, // km
+'Jharkhand to West Bengal': 410, // km
+'Karnataka to Kerala': 620, // km
+'Karnataka to Madhya Pradesh': 1430, // km
+'Karnataka to Maharashtra': 1060, // km
+'Karnataka to Manipur': 2700, // km
+'Karnataka to Meghalaya': 2560, // km
+'Karnataka to Mizoram': 2490, // km
+'Karnataka to Nagaland': 2790, // km
+'Karnataka to Odisha': 1500, // km
+'Karnataka to Punjab': 2470, // km
+'Karnataka to Rajasthan': 1950, // km
+'Karnataka to Sikkim': 2460, // km
+'Karnataka to Tamil Nadu': 360, // km
+'Karnataka to Telangana': 620, // km
+'Karnataka to Tripura': 2350, // km
+'Karnataka to Uttar Pradesh': 1980, // km
+'Karnataka to Uttarakhand': 2410, // km
+'Karnataka to West Bengal': 1950, // km
+'Kerala to Madhya Pradesh': 2050, // km
+'Kerala to Maharashtra': 1570, // km
+'Kerala to Manipur': 3190, // km
+'Kerala to Meghalaya': 3090, // km
+'Kerala to Mizoram': 2980, // km
+'Kerala to Nagaland': 3290, // km
+'Kerala to Odisha': 2030, // km
+'Kerala to Punjab': 3090, // km
+'Kerala to Rajasthan': 2560, // km
+'Kerala to Sikkim': 3030, // km
+'Kerala to Tamil Nadu': 780, // km
+'Kerala to Telangana': 1250, // km
+'Kerala to Tripura': 2860, // km
+'Kerala to Uttar Pradesh': 2600, // km
+'Kerala to Uttarakhand': 3030, // km
+'Kerala to West Bengal': 2480, // km
+'Madhya Pradesh to Maharashtra': 830, // km
+'Madhya Pradesh to Manipur': 2110, // km
+'Madhya Pradesh to Meghalaya': 1860, // km
+'Madhya Pradesh to Mizoram': 1950, // km
+'Madhya Pradesh to Nagaland': 2140, // km
+'Madhya Pradesh to Odisha': 1160, // km
+'Madhya Pradesh to Punjab': 1040, // km
+'Madhya Pradesh to Rajasthan': 550, // km
+'Madhya Pradesh to Sikkim': 1520, // km
+'Madhya Pradesh to Tamil Nadu': 1460, // km
+'Madhya Pradesh to Telangana': 830, // km
+'Madhya Pradesh to Tripura': 1770, // km
+'Madhya Pradesh to Uttar Pradesh': 670, // km
+'Madhya Pradesh to Uttarakhand': 980, // km
+'Madhya Pradesh to West Bengal': 1400, // km
+'Maharashtra to Manipur': 2830, // km
+'Maharashtra to Meghalaya': 2600, // km
+'Maharashtra to Mizoram': 2640, // km
+'Maharashtra to Nagaland': 2870, // km
+'Maharashtra to Odisha': 1700, // km
+'Maharashtra to Punjab': 1690, // km
+'Maharashtra to Rajasthan': 1150, // km
+'Maharashtra to Sikkim': 2310, // km
+'Maharashtra to Tamil Nadu': 1290, // km
+'Maharashtra to Telangana': 780, // km
+'Maharashtra to Tripura': 2470, // km
+'Maharashtra to Uttar Pradesh': 1490, // km
+'Maharashtra to Uttarakhand': 1690, // km
+'Maharashtra to West Bengal': 2070, // km
+'Manipur to Meghalaya': 280, // km
+'Manipur to Mizoram': 220, // km
+'Manipur to Nagaland': 120, // km
+'Manipur to Odisha': 1220, // km
+'Manipur to Punjab': 2260, // km
+'Manipur to Rajasthan': 2290, // km
+'Manipur to Sikkim': 750, // km
+'Manipur to Tamil Nadu': 2420, // km
+'Manipur to Telangana': 2250, // km
+'Manipur to Tripura': 360, // km
+'Manipur to Uttar Pradesh': 1650, // km
+'Manipur to Uttarakhand': 2100, // km
+'Manipur to West Bengal': 770, // km
+'Meghalaya to Mizoram': 280, // km
+'Meghalaya to Nagaland': 280, // km
+'Meghalaya to Odisha': 1070, // km
+'Meghalaya to Punjab': 1980, // km
+'Meghalaya to Rajasthan': 2020, // km
+'Meghalaya to Sikkim': 480, // km
+'Meghalaya to Tamil Nadu': 2310, // km
+'Meghalaya to Telangana': 2070, // km
+'Meghalaya to Tripura': 250, // km
+'Meghalaya to Uttar Pradesh': 1380, // km
+'Meghalaya to Uttarakhand': 1820, // km
+'Meghalaya to West Bengal': 610, // km
+'Mizoram to Nagaland': 320, // km
+'Mizoram to Odisha': 1010, // km
+'Mizoram to Punjab': 2190, // km
+'Mizoram to Rajasthan': 2170, // km
+'Mizoram to Sikkim': 720, // km
+'Mizoram to Tamil Nadu': 2210, // km
+'Mizoram to Telangana': 2050, // km
+'Mizoram to Tripura': 180, // km
+'Mizoram to Uttar Pradesh': 1540, // km
+'Mizoram to Uttarakhand': 2030, // km
+'Mizoram to West Bengal': 580, // km
+'Nagaland to Odisha': 1300, // km
+'Nagaland to Punjab': 2230, // km
+'Nagaland to Rajasthan': 2290, // km
+'Nagaland to Sikkim': 720, // km
+'Nagaland to Tamil Nadu': 2520, // km
+'Nagaland to Telangana': 2320, // km
+'Nagaland to Tripura': 440, // km
+'Nagaland to Uttar Pradesh': 1650, // km
+'Nagaland to Uttarakhand': 2070, // km
+'Nagaland to West Bengal': 850, // km
+'Odisha to Punjab': 1840, // km
+'Odisha to Rajasthan': 1570, // km
+'Odisha to Sikkim': 1040, // km
+'Odisha to Tamil Nadu': 1250, // km
+'Odisha to Telangana': 1050, // km
+'Odisha to Tripura': 860, // km
+'Odisha to Uttar Pradesh': 1100, // km
+'Odisha to Uttarakhand': 1700, // km
+'Odisha to West Bengal': 460, // km
+'Punjab to Rajasthan': 540, // km
+'Punjab to Sikkim': 1510, // km
+'Punjab to Tamil Nadu': 2490, // km
+'Punjab to Telangana': 1870, // km
+'Punjab to Tripura': 2030, // km
+'Punjab to Uttar Pradesh': 740, // km
+'Punjab to Uttarakhand': 160, // km
+'Punjab to West Bengal': 1830, // km
+'Rajasthan to Sikkim': 1590, // km
+'Rajasthan to Tamil Nadu': 2010, // km
+'Rajasthan to Telangana': 1370, // km
+'Rajasthan to Tripura': 1990, // km
+'Rajasthan to Uttar Pradesh': 640, // km
+'Rajasthan to Uttarakhand': 550, // km
+'Rajasthan to West Bengal': 1700, // km
+'Sikkim to Tamil Nadu': 2260, // km
+'Sikkim to Telangana': 1900, // km
+'Sikkim to Tripura': 590, // km
+'Sikkim to Uttar Pradesh': 950, // km
+'Sikkim to Uttarakhand': 1350, // km
+'Sikkim to West Bengal': 660, // km
+'Tamil Nadu to Telangana': 640, // km
+'Tamil Nadu to Tripura': 2080, // km
+'Tamil Nadu to Uttar Pradesh': 1920, // km
+'Tamil Nadu to Uttarakhand': 2410, // km
+'Tamil Nadu to West Bengal': 1700, // km
+'Telangana to Tripura': 1890, // km
+'Telangana to Uttar Pradesh': 1350, // km
+'Telangana to Uttarakhand': 1800, // km
+'Telangana to West Bengal': 1480, // km
+'Tripura to Uttar Pradesh': 1360, // km
+'Tripura to Uttarakhand': 1870, // km
+'Tripura to West Bengal': 410, // km
+'Uttar Pradesh to Uttarakhand': 600, // km
+'Uttar Pradesh to West Bengal': 1110, // km
+'Uttarakhand to West Bengal': 1680, // km
+                // ... add more routes here
+            };
+
+            const key1 = `${origin.toLowerCase()} to ${destination.toLowerCase()}`;
+            const key2 = `${destination.toLowerCase()} to ${origin.toLowerCase()}`; // Check reverse too
+
+            if (knownRoutes[key1]) {
+                return knownRoutes[key1];
+            } else if (knownRoutes[key2]) {
+                return knownRoutes[key2];
+            }
+            // Fallback for unknown routes: a random distance between 100 and 2000 km
+            return Math.floor(Math.random() * 9900) + 100;
+        }
+
+        // Main function to handle travel calculation and display
+        calculateBtn.addEventListener('click', async () => { // Added 'async' here
+            hideMessageBox(); // Hide any previous messages
+
+            const origin = originInput.value.trim();
+            const destination = destinationInput.value.trim();
+
+            if (!origin || !destination) {
+                showMessage('Please enter both departure and arrival locations for your journey.');
+                return;
+            }
+
+            // In a real API scenario, you'd await the distance from the API
+            // const distanceKm = await simulateDistance(origin, destination);
+            const distanceKm = simulateDistance(origin, destination); // Using simulated for now
+
+            // Define travel options with their specific advice
+            const travelOptions = [
+                {
+                    mode: 'Bus',
+                    icon: '🚌',
+                    carbon: calculateCarbonFootprint('bus', distanceKm),
+                    reduceTips: [
+                        'Choose local public transport over private buses for shorter distances.',
+                        'Look for bus operators using newer, more fuel-efficient fleets.',
+                        'Consider overnight buses for longer journeys to save on accommodation and travel time.'
+                    ],
+                    ticketSuggestions: [
+                        'Check for multi-day or weekly passes if you plan multiple trips.',
+                        'Book in advance for potentially cheaper and greener options.',
+                        'Look for direct routes to avoid unnecessary transfers.'
+                    ]
+                },
+                {
+                    mode: 'Train',
+                    icon: '🚆',
+                    carbon: calculateCarbonFootprint('train', distanceKm),
+                    reduceTips: [
+                        'Trains are generally one of the greenest motorized options, especially electric trains.',
+                        'Opt for direct routes to minimize energy consumption from stops and starts.',
+                        'Choose standard class over first class if available, as it typically means more passengers per carriage.'
+                    ],
+                    ticketSuggestions: [
+                        'Explore rail passes for extensive travel within a region or country.',
+                        'Book off-peak tickets for better prices and potentially less crowded, more efficient journeys.',
+                        'Consider sleeper trains for long distances to combine travel and accommodation.'
+                    ]
+                },
+                {
+                    mode: 'Car',
+                    icon: '🚗',
+                    carbon: calculateCarbonFootprint('car', distanceKm),
+                    reduceTips: [
+                        'Carpooling is the single biggest way to reduce your car\'s per-person footprint.',
+                        'Consider renting an electric vehicle (EV) if available for your journey.',
+                        'Drive efficiently: avoid harsh acceleration/braking, maintain tire pressure, and reduce unnecessary weight.'
+                    ],
+                    ticketSuggestions: [
+                        'If renting, specifically ask for hybrid or electric car options.',
+                        'Use ride-sharing apps that offer carpooling options.',
+                        'Look for car rental companies with sustainability initiatives.'
+                    ]
+                },
+                {
+                    mode: 'Airplane',
+                    icon: '✈️',
+                    carbon: calculateCarbonFootprint('airplane', distanceKm),
+                    reduceTips: [
+                        'Fly direct whenever possible; take-offs and landings consume the most fuel.',
+                        'Choose economy class; more passengers per plane means lower per-person emissions.',
+                        'Consider offsetting your flight\'s emissions through reputable programs (e.g., Gold Standard, Verified Carbon Standard).',
+                        'Pack light to reduce the aircraft\'s weight and fuel consumption.'
+                    ],
+                    ticketSuggestions: [
+                        'Prioritize direct flights.',
+                        'Look for airlines that invest in sustainable aviation fuels (SAF) or have modern, fuel-efficient fleets.',
+                        'Book well in advance for potentially better deals and more options.'
+                    ]
+                },
+                {
+                    mode: 'Walk',
+                    icon: '🚶',
+                    carbon: '0.00',
+                    reduceTips: [
+                        'The ultimate zero-carbon option! Great for your health and the environment.',
+                        'Explore local areas on foot to discover hidden gems.',
+                        'Combine walking with public transport for a truly green commute.'
+                    ],
+                    ticketSuggestions: [
+                        'No tickets needed! Just comfortable shoes.'
+                    ]
+                },
+                {
+                    mode: 'Bicycle',
+                    icon: '🚲',
+                    carbon: '0.00',
+                    reduceTips: [
+                        'Another fantastic zero-carbon option, perfect for medium distances.',
+                        'Consider electric bikes for longer or hillier routes.',
+                        'Many cities offer bike-sharing programs for convenience.'
+                    ],
+                    ticketSuggestions: [
+                        'No tickets needed! Look for bike rental services in your destination city.'
+                    ]
+                }
+            ];
+
+            // Clear previous results
+            optionsContainer.innerHTML = '';
+
+            // Populate results
+            travelOptions.forEach(option => {
+                const card = document.createElement('div');
+                card.className = 'card flex flex-col space-y-3';
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3 mb-2">
+                        <span class="text-3xl">${option.icon}</span>
+                        <h3 class="text-xl font-semibold text-gray-700">${option.mode}</h3>
+                    </div>
+                    <p class="text-gray-600">
+                        Estimated Distance: <span class="font-medium">${distanceKm} km</span>
+                    </p>
+                    <p class="text-gray-600">
+                        Estimated Carbon Footprint: <span class="carbon-footprint">${option.carbon} kg CO2e</span>
+                    </p>
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-2">How to reduce carbon:</h4>
+                        <ul class="suggestion-list text-sm">
+                            ${option.reduceTips.map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-2">Low carbon ticket suggestions:</h4>
+                        <ul class="suggestion-list text-sm">
+                            ${option.ticketSuggestions.map(suggestion => `<li>${suggestion}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                optionsContainer.appendChild(card);
+            });
+
+            // Show the results section
+            resultsSection.classList.remove('hidden');
+        });
+
+        // Simulating Low Carbon Stays search
+        searchStaysBtn.addEventListener('click', () => {
+            const location = stayLocationInput.value.trim();
+            const checkIn = checkInDateInput.value;
+            const checkOut = checkOutDateInput.value;
+
+            if (!location) {
+                alert('Please enter a location to search for eco-friendly stays.');
+                return;
+            }
+
+            // Simulate some results
+            const simulatedStays = [
+                { name: 'The Green Leaf Hotel', description: 'A certified eco-hotel with solar power and a rooftop garden.' },
+                { name: 'Urban Eco-Lodge', description: 'Sustainable living with recycled materials and water conservation systems.' },
+                { name: 'Nature\'s Rest Inn', description: 'A remote, off-grid inn focused on local produce and minimal waste.' },
+                { name: 'Eco-Friendly B&B', description: 'Small bed and breakfast with a strong commitment to local sourcing.' },
+            ];
+
+            staysResultsContainer.innerHTML = '';
+            simulatedStays.forEach(stay => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <h4 class="text-lg font-bold mb-2">${stay.name}</h4>
+                    <p class="text-sm text-gray-600">${stay.description}</p>
+                `;
+                staysResultsContainer.appendChild(card);
+            });
+        });
+    </script>
+</body>
+</html>
