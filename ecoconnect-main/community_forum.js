@@ -210,4 +210,122 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Initial Load ---
     updateImpactMetrics(); // Set initial values
     renderEvents(); // Display initial events
+    
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const fileUploadInput = document.getElementById('media-upload');
+    const fileListContainer = document.getElementById('file-list');
+    const uploadButton = document.getElementById('upload-btn');
+    
+    // A Map to store files that have been selected in the current session.
+    // The key is a simple hash (name + size) for uniqueness.
+    const uploadedFiles = new Map();
+
+    // Event listener for when files are selected
+    fileUploadInput.addEventListener('change', (event) => {
+        const files = event.target.files;
+
+        // If no files are selected, do nothing
+        if (files.length === 0) {
+            return;
+        }
+
+        // Add each new file to our list
+        for (const file of files) {
+            // Create a unique key for the file
+            const fileKey = `${file.name}-${file.size}-${file.lastModified}`;
+
+            // Check if this file has already been added
+            if (uploadedFiles.has(fileKey)) {
+                alert(`The file "${file.name}" has already been selected.`);
+                continue; // Skip this file
+            }
+
+            // Store the file and its unique key in the Map.
+            uploadedFiles.set(fileKey, file);
+
+            // Create a preview element and append it to the list.
+            createFilePreview(file, fileKey);
+        }
+
+        // Show the upload button once files are selected
+        if (uploadedFiles.size > 0) {
+            uploadButton.style.display = 'block';
+        }
+
+        // Clear the input to allow the same file to be selected again later
+        fileUploadInput.value = null;
+    });
+
+    // Event listener for the upload button
+    uploadButton.addEventListener('click', () => {
+        if (uploadedFiles.size > 0) {
+            // In a real application, you would use FormData and the fetch API to send the files to a server here.
+            
+            // This is a simulation of a successful upload.
+            alert('Simulating upload of ' + uploadedFiles.size + ' files. Files will be processed by the server.');
+            
+            // Clear the list and hide the button to simulate the end of the upload process.
+            uploadedFiles.clear();
+            fileListContainer.innerHTML = '';
+            uploadButton.style.display = 'none';
+        } else {
+            alert('Please select files to upload first.');
+        }
+    });
+
+    // Function to create and display a file preview
+    function createFilePreview(file, fileKey) {
+        const fileItem = document.createElement('div');
+        fileItem.className = 'file-item';
+        fileItem.dataset.fileKey = fileKey;
+
+        // Create an image element for the preview
+        const mediaElement = document.createElement('img');
+        mediaElement.className = 'preview-media';
+        mediaElement.alt = `Preview of ${file.name}`;
+        
+        // Use FileReader to create a preview thumbnail
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            mediaElement.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+
+        // Get the current date and time for the unique timestamp
+        const now = new Date();
+        const dateTimeString = now.toLocaleString();
+
+        const fileDetails = document.createElement('div');
+        fileDetails.className = 'file-info';
+        fileDetails.innerHTML = `
+            <p class="file-name">${file.name}</p>
+            <p><strong>Upload Time:</strong> ${dateTimeString}</p>
+        `;
+
+        const removeButton = document.createElement('button');
+        removeButton.className = 'remove-btn';
+        removeButton.innerHTML = '&times;'; // 'x' icon
+        removeButton.title = 'Remove file';
+        
+        // Remove the file from both the UI and the Map when clicked
+        removeButton.onclick = () => {
+            fileItem.remove();
+            uploadedFiles.delete(fileKey);
+
+            // If all files are removed, hide the upload button
+            if (uploadedFiles.size === 0) {
+                uploadButton.style.display = 'none';
+            }
+        };
+
+        fileItem.appendChild(mediaElement);
+        fileItem.appendChild(fileDetails);
+        fileItem.appendChild(removeButton);
+
+        fileListContainer.appendChild(fileItem);
+    }
+});
+// js for video input
+
