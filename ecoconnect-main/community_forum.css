@@ -206,6 +206,40 @@ h2 {
     transform: scale(1.1);
 }
 
+/* css for input of video */
+.custom-file-upload-btn {
+    display: inline-block;
+    background-color: white;
+    color: #c3991d88; /* Green text, matching your theme */
+    padding: 10px 20px;
+    border: 2px solid #4CAF50; /* Green border */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effect for the button */
+.custom-file-upload-btn:hover {
+    background-color: #c9cb37; /* Background turns green */
+    color: white; /* Text turns white */
+    transform: translateY(-2px); /* Lifts the button slightly */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Increases shadow on hover */
+}
+
+.file-item img,
+.file-item video {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Prevents extra space below the image/video */
+}
+
+
+
+
+
 .leaderboard {
     list-style: none;
     padding: 0;
@@ -419,6 +453,98 @@ h2 {
     transform: translateY(-2px);
 }
 
+
+/* video input */
+
+.container {
+    /* Center the container on the page */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    
+    /* Add some basic styling for the container */
+    background-color: #f9f9f9;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 2rem auto; /* Centers the container block horizontally */
+}
+
+/* Ensure the upload button is also a block element to take up full width if needed */
+.upload-btn {
+    margin-top: 1.5rem;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* New CSS to ensure file previews are well-organized */
+
+.file-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Creates a responsive grid */
+    gap: 15px; /* Adds space between grid items */
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+.file-item {
+    background-color: #f9f9f9;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 8px var(--shadow-light);
+    transition: transform 0.2s ease-in-out;
+}
+
+.file-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.file-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.file-info {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.file-info p {
+    margin: 0;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.file-info .file-name {
+    font-weight: 600;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: #e53935; /* Red for remove */
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 5px;
+}
 
 /* Community Forum Section */
 .comment-input-area {
